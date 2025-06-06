@@ -320,6 +320,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/common/FrontendApplication.cpp</locationURI>
 		</link>
 		<link>
+			<name>Application/User/gui/ball.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/containers/ball.cpp</locationURI>
+		</link>
+		<link>
 			<name>Application/User/gui/gameBackground.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/containers/gameBackground.cpp</locationURI>
@@ -455,6 +460,11 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/gui_generated/src/common/FrontendApplicationBase.cpp</locationURI>
 		</link>
 		<link>
+			<name>Application/User/generated/ballBase.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/gui_generated/src/containers/ballBase.cpp</locationURI>
+		</link>
+		<link>
 			<name>Application/User/generated/gameBackgroundBase.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/gui_generated/src/containers/gameBackgroundBase.cpp</locationURI>
@@ -490,14 +500,14 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_glass_theme_images_widgets_button_regular_height_50_small_round_pressed.cpp</locationURI>
 		</link>
 		<link>
-			<name>Application/User/generated/image_icon_theme_images_action_home_filled_40_40_000000.svg.cpp</name>
+			<name>Application/User/generated/image_icon_theme_images_action_home_filled_30_30_000000.svg.cpp</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_icon_theme_images_action_home_filled_40_40_000000.svg.cpp</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_icon_theme_images_action_home_filled_30_30_000000.svg.cpp</locationURI>
 		</link>
 		<link>
-			<name>Application/User/generated/image_icon_theme_images_action_home_filled_40_40_B0B0B0.svg.cpp</name>
+			<name>Application/User/generated/image_icon_theme_images_action_home_filled_30_30_A88D34.svg.cpp</name>
 			<type>1</type>
-			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_icon_theme_images_action_home_filled_40_40_B0B0B0.svg.cpp</locationURI>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/images/src/__generated/image_icon_theme_images_action_home_filled_30_30_A88D34.svg.cpp</locationURI>
 		</link>
 		<link>
 			<name>Application/User/generated/image_pingpong.cpp</name>

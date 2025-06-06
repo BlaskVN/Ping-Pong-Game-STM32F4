@@ -29,6 +29,8 @@
     <ClCompile Include="..\..\generated\gui_generated\src\game_screen\GameViewBase.cpp"/>
     <ClCompile Include="..\..\gui\src\containers\gameBackground.cpp"/>
     <ClCompile Include="..\..\generated\gui_generated\src\containers\gameBackgroundBase.cpp"/>
+    <ClCompile Include="..\..\gui\src\containers\ball.cpp"/>
+    <ClCompile Include="..\..\generated\gui_generated\src\containers\ballBase.cpp"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(ApplicationRoot)\assets\texts\texts.xml"/>
@@ -187,6 +189,8 @@
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\game_screen\GameViewBase.hpp"/>
     <ClInclude Include="..\..\gui\include\gui\containers\gameBackground.hpp"/>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\containers\gameBackgroundBase.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\containers\ball.hpp"/>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\containers\ballBase.hpp"/>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="$(ApplicationRoot)\generated\simulator\touchgfx.rc"/>
