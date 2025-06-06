@@ -5,11 +5,11 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Core/Src/freertos.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Core/Src/main.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Core/Src/stm32f4xx_hal_msp.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Core/Src/stm32f4xx_hal_timebase_tim.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Core/Src/stm32f4xx_it.c \
+../../Core/Src/freertos.c \
+../../Core/Src/main.c \
+../../Core/Src/stm32f4xx_hal_msp.c \
+../../Core/Src/stm32f4xx_hal_timebase_tim.c \
+../../Core/Src/stm32f4xx_it.c \
 ../Application/User/syscalls.c \
 ../Application/User/sysmem.c 
 
