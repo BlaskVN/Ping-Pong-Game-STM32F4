@@ -5,16 +5,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Middlewares/Third_Party/FreeRTOS/Source/croutine.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Middlewares/Third_Party/FreeRTOS/Source/event_groups.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Middlewares/Third_Party/FreeRTOS/Source/list.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Middlewares/Third_Party/FreeRTOS/Source/queue.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Middlewares/Third_Party/FreeRTOS/Source/tasks.c \
-D:/VSCode/2024.2/embedded/CK/PingPongGame/Middlewares/Third_Party/FreeRTOS/Source/timers.c 
+./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c \
+./Middlewares/Third_Party/FreeRTOS/Source/croutine.c \
+./Middlewares/Third_Party/FreeRTOS/Source/event_groups.c \
+./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c \
+./Middlewares/Third_Party/FreeRTOS/Source/list.c \
+./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c \
+./Middlewares/Third_Party/FreeRTOS/Source/queue.c \
+./Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c \
+./Middlewares/Third_Party/FreeRTOS/Source/tasks.c \
+./Middlewares/Third_Party/FreeRTOS/Source/timers.c 
 
 C_DEPS += \
 ./Middlewares/FreeRTOS/cmsis_os2.d \
