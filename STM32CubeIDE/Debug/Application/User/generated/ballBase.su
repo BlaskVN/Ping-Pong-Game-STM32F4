@@ -1,0 +1,21 @@
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:315:18:virtual void touchgfx::Drawable::setX(int16_t)	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:327:18:virtual void touchgfx::Drawable::setY(int16_t)	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:356:18:virtual void touchgfx::Drawable::setWidth(int16_t)	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:368:18:virtual void touchgfx::Drawable::setHeight(int16_t)	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:378:18:virtual void touchgfx::Drawable::childGeometryChanged()	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:389:18:virtual void touchgfx::Drawable::handleClickEvent(const touchgfx::ClickEvent&)	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:401:18:virtual void touchgfx::Drawable::handleGestureEvent(const touchgfx::GestureEvent&)	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:490:18:virtual void touchgfx::Drawable::handleDragEvent(const touchgfx::DragEvent&)	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:501:18:virtual void touchgfx::Drawable::handleTickEvent()	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:588:18:virtual void touchgfx::Drawable::moveTo(int16_t, int16_t)	4	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/containers/Container.hpp:165:23:virtual touchgfx::Drawable* touchgfx::Container::getFirstChild()	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/canvas/AbstractPainter.hpp:61:34:virtual touchgfx::HAL::RenderingMethod touchgfx::AbstractPainter::getRenderingMethod() const	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/canvas/AbstractPainter.hpp:78:18:virtual bool touchgfx::AbstractPainter::setup(const touchgfx::Rect&) const	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/canvas/AbstractPainter.hpp:90:18:virtual void touchgfx::AbstractPainter::tearDown() const	0	static
+D:/VSCode/2024.2/embedded/CK/PingPongGame/TouchGFX/generated/gui_generated/src/containers/ballBase.cpp:31:1:ballBase::~ballBase()	0	static
+D:/VSCode/2024.2/embedded/CK/PingPongGame/TouchGFX/generated/gui_generated/src/containers/ballBase.cpp:36:6:virtual void ballBase::initialize()	0	static
+D:/VSCode/2024.2/embedded/CK/PingPongGame/TouchGFX/generated/gui_generated/src/containers/ballBase.cpp:31:1:virtual ballBase::~ballBase()	8	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:121:18:virtual void touchgfx::Drawable::invalidateContent() const	0	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/Drawable.hpp:233:10:void touchgfx::Drawable::setPosition(int16_t, int16_t, int16_t, int16_t)	24	static
+../../Middlewares/ST/touchgfx/framework/include/touchgfx/widgets/canvas/AbstractPainterRGB565.hpp:41:5:touchgfx::AbstractPainterRGB565::AbstractPainterRGB565()	16	static
+D:/VSCode/2024.2/embedded/CK/PingPongGame/TouchGFX/generated/gui_generated/src/containers/ballBase.cpp:7:1:ballBase::ballBase()	56	static
