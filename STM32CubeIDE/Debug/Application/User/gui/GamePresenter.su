@@ -1,5 +1,0 @@
-../../TouchGFX/gui/include/gui/game_screen/GamePresenter.hpp:28:13:GamePresenter::~GamePresenter()	0	static
-D:/VSCode/2024.2/embedded/CK/PingPongGame/TouchGFX/gui/src/game_screen/GamePresenter.cpp:10:6:virtual void GamePresenter::activate()	0	static
-../../TouchGFX/gui/include/gui/game_screen/GamePresenter.hpp:28:13:virtual GamePresenter::~GamePresenter()	8	static
-../../TouchGFX/gui/include/gui/game_screen/GamePresenter.hpp:28:13:virtual void* GamePresenter::_ZThn4_N13GamePresenterD1Ev()	0	static
-D:/VSCode/2024.2/embedded/CK/PingPongGame/TouchGFX/gui/src/game_screen/GamePresenter.cpp:4:1:GamePresenter::GamePresenter(GameView&)	0	static
