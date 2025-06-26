@@ -34,7 +34,7 @@
         ],
         "Interactions": [
           {
-            "InteractionName": "PLAY",
+            "InteractionName": "selectMode",
             "Trigger": {
               "Type": "TriggerClicked",
               "TriggerComponent": "Start"
@@ -43,7 +43,109 @@
               "Type": "ActionGotoScreen",
               "ScreenTransitionType": "ScreenTransitionSlide",
               "ScreenTransitionDirection": "East",
+              "ActionComponent": "SelectMode"
+            }
+          }
+        ]
+      },
+      {
+        "Name": "SelectMode",
+        "Components": [
+          {
+            "Type": "CustomContainerInstance",
+            "Name": "gameBackground1",
+            "Width": 240,
+            "Height": 320,
+            "LockPosition": true,
+            "CustomContainerDefinitionName": "gameBackground"
+          },
+          {
+            "Type": "Button",
+            "Name": "backMenu",
+            "X": 210,
+            "Width": 30,
+            "Height": 30,
+            "LockPosition": true,
+            "Pressed": "__generated\\icon_theme_images_action_home_filled_30_30_A88D34.svg.png",
+            "Released": "__generated\\icon_theme_images_action_home_filled_30_30_000000.svg.png"
+          },
+          {
+            "Type": "ButtonWithLabel",
+            "Name": "PVP",
+            "X": 8,
+            "Y": 175,
+            "Width": 225,
+            "Height": 94,
+            "LockPosition": true,
+            "Pressed": "__generated\\glass_theme_images_widgets_button_regular_height_50_small_round_pressed.png",
+            "Released": "__generated\\glass_theme_images_widgets_button_regular_height_50_small_round_active.png",
+            "TextId": "__SingleUse_8MKT",
+            "PressedColor": {
+              "Red": 102,
+              "Green": 102,
+              "Blue": 102
+            },
+            "TextRotation": "0",
+            "Preset": "glass_theme\\presets\\button\\regular\\height_50\\small_round_active.json"
+          },
+          {
+            "Type": "ButtonWithLabel",
+            "Name": "PVE",
+            "X": 8,
+            "Y": 43,
+            "Width": 225,
+            "Height": 94,
+            "LockPosition": true,
+            "Pressed": "__generated\\glass_theme_images_widgets_button_regular_height_50_small_round_pressed.png",
+            "Released": "__generated\\glass_theme_images_widgets_button_regular_height_50_small_round_active.png",
+            "TextId": "__SingleUse_DZAG",
+            "PressedColor": {
+              "Red": 102,
+              "Green": 102,
+              "Blue": 102
+            },
+            "TextRotation": "0",
+            "Preset": "glass_theme\\presets\\button\\regular\\height_50\\small_round_active.json"
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "backMenu",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "backMenu"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionCover",
+              "ScreenTransitionDirection": "West",
+              "ActionComponent": "Menu"
+            }
+          },
+          {
+            "InteractionName": "playPVP",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "PVP"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionSlide",
+              "ScreenTransitionDirection": "East",
               "ActionComponent": "Game"
+            }
+          },
+          {
+            "InteractionName": "playPVE",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "PVE"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionSlide",
+              "ScreenTransitionDirection": "East",
+              "ActionComponent": "GamePVE"
             }
           }
         ]
@@ -66,6 +168,92 @@
             "X": 210,
             "Width": 30,
             "Height": 30,
+            "LockPosition": true,
+            "Pressed": "__generated\\icon_theme_images_action_home_filled_30_30_A88D34.svg.png",
+            "Released": "__generated\\icon_theme_images_action_home_filled_30_30_000000.svg.png"
+          },
+          {
+            "Type": "CustomContainerInstance",
+            "Name": "ball1",
+            "X": 145,
+            "Y": 241,
+            "Width": 10,
+            "Height": 10,
+            "CustomContainerDefinitionName": "ball",
+            "Draggable": true,
+            "Moveable": true
+          },
+          {
+            "Type": "SvgImage",
+            "Name": "pad1",
+            "X": 155,
+            "Y": 251,
+            "Width": 58,
+            "Height": 55,
+            "Image": "ping-pong-svgrepo-com.svg",
+            "ImagePositionX": 3.0,
+            "ImagePositionY": 3.0,
+            "ImageHorizontalScale": 0.1,
+            "ImageVerticalScale": 0.1,
+            "RotationCenterX": 25.0,
+            "RotationCenterY": 25.0,
+            "RotationDegrees": -1.0,
+            "Draggable": true,
+            "Moveable": true
+          },
+          {
+            "Type": "SvgImage",
+            "Name": "pad2",
+            "X": 27,
+            "Width": 54,
+            "Height": 54,
+            "Image": "ping-pong-svgrepo-com.svg",
+            "ImagePositionX": -3.0,
+            "ImagePositionY": -3.0,
+            "ImageHorizontalScale": 0.1,
+            "ImageVerticalScale": 0.1,
+            "RotationCenterX": 25.0,
+            "RotationCenterY": 25.0,
+            "RotationDegrees": 180.0,
+            "Draggable": true,
+            "Moveable": true
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "backMenu",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "backMenu"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionCover",
+              "ScreenTransitionDirection": "West",
+              "ActionComponent": "Menu"
+            }
+          }
+        ]
+      },
+      {
+        "Name": "GamePVE",
+        "CanvasBufferSize": 3600,
+        "Components": [
+          {
+            "Type": "CustomContainerInstance",
+            "Name": "gameBackground1",
+            "Width": 240,
+            "Height": 320,
+            "LockPosition": true,
+            "CustomContainerDefinitionName": "gameBackground"
+          },
+          {
+            "Type": "Button",
+            "Name": "backMenu",
+            "X": 210,
+            "Width": 30,
+            "Height": 30,
+            "LockPosition": true,
             "Pressed": "__generated\\icon_theme_images_action_home_filled_30_30_A88D34.svg.png",
             "Released": "__generated\\icon_theme_images_action_home_filled_30_30_000000.svg.png"
           },

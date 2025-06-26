@@ -6,6 +6,12 @@
   <Texts>
     <TextGroup Id="Group1" />
     <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_DZAG" Alignment="Center" TypographyId="Blod">
+        <Translation Language="GB">PVE</Translation>
+      </Text>
+      <Text Id="__SingleUse_8MKT" Alignment="Center" TypographyId="Blod">
+        <Translation Language="GB">PVP</Translation>
+      </Text>
       <Text Id="__SingleUse_ADLQ" Alignment="Center" TypographyId="Blod">
         <Translation Language="GB">PLAY</Translation>
       </Text>

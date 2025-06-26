@@ -340,6 +340,16 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/game_screen/GameView.cpp</locationURI>
 		</link>
 		<link>
+			<name>Application/User/gui/GamePVEPresenter.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/gamepve_screen/GamePVEPresenter.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/gui/GamePVEView.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/gamepve_screen/GamePVEView.cpp</locationURI>
+		</link>
+		<link>
 			<name>Application/User/gui/MenuPresenter.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/menu_screen/MenuPresenter.cpp</locationURI>
@@ -353,6 +363,16 @@
 			<name>Application/User/gui/Model.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/model/Model.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/gui/SelectModePresenter.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/selectmode_screen/SelectModePresenter.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/gui/SelectModeView.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/gui/src/selectmode_screen/SelectModeView.cpp</locationURI>
 		</link>
 		<link>
 			<name>Application/User/generated/ApplicationFontProvider.cpp</name>
@@ -475,9 +495,19 @@
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/gui_generated/src/game_screen/GameViewBase.cpp</locationURI>
 		</link>
 		<link>
+			<name>Application/User/generated/GamePVEViewBase.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/gui_generated/src/gamepve_screen/GamePVEViewBase.cpp</locationURI>
+		</link>
+		<link>
 			<name>Application/User/generated/MenuViewBase.cpp</name>
 			<type>1</type>
 			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/gui_generated/src/menu_screen/MenuViewBase.cpp</locationURI>
+		</link>
+		<link>
+			<name>Application/User/generated/SelectModeViewBase.cpp</name>
+			<type>1</type>
+			<locationURI>PARENT-1-PROJECT_LOC/TouchGFX/generated/gui_generated/src/selectmode_screen/SelectModeViewBase.cpp</locationURI>
 		</link>
 		<link>
 			<name>Application/User/generated/BitmapDatabase.cpp</name>
