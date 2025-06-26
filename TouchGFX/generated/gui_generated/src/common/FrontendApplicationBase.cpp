@@ -11,8 +11,12 @@
 #include <platform/driver/lcd/LCD16bpp.hpp>
 #include <gui/menu_screen/MenuView.hpp>
 #include <gui/menu_screen/MenuPresenter.hpp>
+#include <gui/selectmode_screen/SelectModeView.hpp>
+#include <gui/selectmode_screen/SelectModePresenter.hpp>
 #include <gui/game_screen/GameView.hpp>
 #include <gui/game_screen/GamePresenter.hpp>
+#include <gui/gamepve_screen/GamePVEView.hpp>
+#include <gui/gamepve_screen/GamePVEPresenter.hpp>
 
 using namespace touchgfx;
 
@@ -57,6 +61,19 @@ void FrontendApplicationBase::gotoMenuScreenCoverTransitionWestImpl()
     touchgfx::makeTransition<MenuView, MenuPresenter, touchgfx::CoverTransition<WEST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }
 
+// SelectMode
+
+void FrontendApplicationBase::gotoSelectModeScreenSlideTransitionEast()
+{
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplicationBase::gotoSelectModeScreenSlideTransitionEastImpl);
+    pendingScreenTransitionCallback = &transitionCallback;
+}
+
+void FrontendApplicationBase::gotoSelectModeScreenSlideTransitionEastImpl()
+{
+    touchgfx::makeTransition<SelectModeView, SelectModePresenter, touchgfx::SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+}
+
 // Game
 
 void FrontendApplicationBase::gotoGameScreenSlideTransitionEast()
@@ -68,4 +85,17 @@ void FrontendApplicationBase::gotoGameScreenSlideTransitionEast()
 void FrontendApplicationBase::gotoGameScreenSlideTransitionEastImpl()
 {
     touchgfx::makeTransition<GameView, GamePresenter, touchgfx::SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
+}
+
+// GamePVE
+
+void FrontendApplicationBase::gotoGamePVEScreenSlideTransitionEast()
+{
+    transitionCallback = touchgfx::Callback<FrontendApplicationBase>(this, &FrontendApplicationBase::gotoGamePVEScreenSlideTransitionEastImpl);
+    pendingScreenTransitionCallback = &transitionCallback;
+}
+
+void FrontendApplicationBase::gotoGamePVEScreenSlideTransitionEastImpl()
+{
+    touchgfx::makeTransition<GamePVEView, GamePVEPresenter, touchgfx::SlideTransition<EAST>, Model >(&currentScreen, &currentPresenter, frontendHeap, &currentTransition, &model);
 }

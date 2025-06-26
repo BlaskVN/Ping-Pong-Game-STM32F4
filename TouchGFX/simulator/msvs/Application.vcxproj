@@ -31,6 +31,12 @@
     <ClCompile Include="..\..\generated\gui_generated\src\containers\gameBackgroundBase.cpp"/>
     <ClCompile Include="..\..\gui\src\containers\ball.cpp"/>
     <ClCompile Include="..\..\generated\gui_generated\src\containers\ballBase.cpp"/>
+    <ClCompile Include="..\..\gui\src\gamepve_screen\GamePVEPresenter.cpp"/>
+    <ClCompile Include="..\..\gui\src\gamepve_screen\GamePVEView.cpp"/>
+    <ClCompile Include="..\..\generated\gui_generated\src\gamepve_screen\GamePVEViewBase.cpp"/>
+    <ClCompile Include="..\..\gui\src\selectmode_screen\SelectModePresenter.cpp"/>
+    <ClCompile Include="..\..\gui\src\selectmode_screen\SelectModeView.cpp"/>
+    <ClCompile Include="..\..\generated\gui_generated\src\selectmode_screen\SelectModeViewBase.cpp"/>
   </ItemGroup>
   <ItemGroup>
     <None Include="$(ApplicationRoot)\assets\texts\texts.xml"/>
@@ -191,6 +197,12 @@
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\containers\gameBackgroundBase.hpp"/>
     <ClInclude Include="..\..\gui\include\gui\containers\ball.hpp"/>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\containers\ballBase.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\gamepve_screen\GamePVEPresenter.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\gamepve_screen\GamePVEView.hpp"/>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\gamepve_screen\GamePVEViewBase.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\selectmode_screen\SelectModePresenter.hpp"/>
+    <ClInclude Include="..\..\gui\include\gui\selectmode_screen\SelectModeView.hpp"/>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\selectmode_screen\SelectModeViewBase.hpp"/>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="$(ApplicationRoot)\generated\simulator\touchgfx.rc"/>

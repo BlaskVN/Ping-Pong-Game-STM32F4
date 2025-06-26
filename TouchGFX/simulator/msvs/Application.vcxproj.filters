@@ -208,6 +208,30 @@
     <Filter Include="Source Files\generated\gui_generated\containers">
       <UniqueIdentifier>CD3C1E85-2D71-A239-5094-A690E32491E0</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\gui\gamepve_screen">
+      <UniqueIdentifier>3240CCF9-96E4-6A6F-87B0-B109EDCC55A4</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gui\gamepve_screen">
+      <UniqueIdentifier>48D1386E-4C94-29D5-3355-672344FCB33D</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gui\selectmode_screen">
+      <UniqueIdentifier>EA8869AC-381D-468E-92D2-B3B2A64578D0</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gui\selectmode_screen">
+      <UniqueIdentifier>4CA32F30-0BFA-9427-579E-552A3339A322</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\generated\gui_generated\selectmode_screen">
+      <UniqueIdentifier>DE774B9F-20D0-5310-19DB-433F97B55C2D</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\generated\gui_generated\selectmode_screen">
+      <UniqueIdentifier>E0900C6E-55C6-B4D8-B24A-BD3C939CEDAB</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\generated\gui_generated\gamepve_screen">
+      <UniqueIdentifier>7D1C7FAF-18BE-E63D-A197-763CBAA0E383</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\generated\gui_generated\gamepve_screen">
+      <UniqueIdentifier>4B983B61-69FF-72E0-CAB9-D43511AA0AC6</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(TouchGFXReleasePath)\framework\source\platform\driver\touch\SDL2TouchController.cpp">
@@ -269,6 +293,24 @@
     </ClCompile>
     <ClCompile Include="..\..\generated\gui_generated\src\containers\ballBase.cpp">
       <Filter>Source Files\generated\gui_generated\containers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\gamepve_screen\GamePVEPresenter.cpp">
+      <Filter>Source Files\gui\gamepve_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\gamepve_screen\GamePVEView.cpp">
+      <Filter>Source Files\gui\gamepve_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\generated\gui_generated\src\gamepve_screen\GamePVEViewBase.cpp">
+      <Filter>Source Files\generated\gui_generated\gamepve_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\selectmode_screen\SelectModePresenter.cpp">
+      <Filter>Source Files\gui\selectmode_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\gui\src\selectmode_screen\SelectModeView.cpp">
+      <Filter>Source Files\gui\selectmode_screen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\generated\gui_generated\src\selectmode_screen\SelectModeViewBase.cpp">
+      <Filter>Source Files\generated\gui_generated\selectmode_screen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -741,6 +783,24 @@
     </ClInclude>
     <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\containers\ballBase.hpp">
       <Filter>Header Files\generated\gui_generated\containers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\gamepve_screen\GamePVEPresenter.hpp">
+      <Filter>Header Files\gui\gamepve_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\gamepve_screen\GamePVEView.hpp">
+      <Filter>Header Files\gui\gamepve_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\gamepve_screen\GamePVEViewBase.hpp">
+      <Filter>Header Files\generated\gui_generated\gamepve_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\selectmode_screen\SelectModePresenter.hpp">
+      <Filter>Header Files\gui\selectmode_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\gui\include\gui\selectmode_screen\SelectModeView.hpp">
+      <Filter>Header Files\gui\selectmode_screen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\generated\gui_generated\include\gui_generated\selectmode_screen\SelectModeViewBase.hpp">
+      <Filter>Header Files\generated\gui_generated\selectmode_screen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
