@@ -2,8 +2,11 @@
 #include <touchgfx/widgets/Box.hpp> // Để sử dụng touchgfx::Rect, cần include Box.hpp
 #include <cmath>             // Cần thiết cho std::sqrt và std::sin
 
-// Khởi tạo GameView, bao gồm cả ball_speed
-GameView::GameView() : GameViewBase(), ball_dx(0.0f), ball_dy(0.0f), ball_speed(3.0f)
+// Khởi tạo GameView, bao gồm cả ball_speed và game state
+GameView::GameView() : GameViewBase(), ball_dx(0.0f), ball_dy(0.0f), ball_speed(1.0f),
+                      player1_score(0), player2_score(0), game_over(false), 
+                      ball_reset_pending(false), reset_timer(0), game_over_timer(0),
+                      MAX_SCORE(5), RESET_DELAY(120)
 {
 
 }
@@ -11,14 +14,7 @@ GameView::GameView() : GameViewBase(), ball_dx(0.0f), ball_dy(0.0f), ball_speed(
 void GameView::setupScreen()
 {
     GameViewBase::setupScreen();
-    // Thiết lập hướng di chuyển ban đầu cho quả bóng (ví dụ)
-    // Bạn có thể muốn bóng đứng yên ban đầu hoặc di chuyển theo một hướng cụ thể
-    // Ví dụ: di chuyển chéo xuống dưới bên phải
-    ball_dx = 1.0f * ball_speed; 
-    ball_dy = 1.0f * ball_speed;
-    // Hoặc để bóng đứng yên:
-    // ball_dx = 0.0f;
-    // ball_dy = 0.0f;
+    resetGame(); // Initialize game state
 }
 
 void GameView::tearDownScreen()
@@ -28,6 +24,25 @@ void GameView::tearDownScreen()
 
 void GameView::handleTickEvent()
 {
+    // Handle ball reset timer
+    if (ball_reset_pending)
+    {
+        reset_timer--;
+        if (reset_timer <= 0)
+        {
+            resetBall();
+            ball_reset_pending = false;
+        }
+        return; // Don't update ball physics during reset
+    }
+    
+    // Don't update game if it's over
+    if (game_over)
+    {
+        handleGameInput(); // Check for restart input
+        return;
+    }
+    
     // Vị trí và kích thước hiện tại của bóng
     int ballX = ball1.getX();
     int ballY = ball1.getY();
@@ -48,6 +63,56 @@ void GameView::handleTickEvent()
     const int upperHalfMaxY = screenCenterY; // Nửa trên: từ 0 đến screenCenterY
     const int lowerHalfMinY = screenCenterY; // Nửa dưới: từ screenCenterY đến screenHeight
     
+    // Kiểm tra bóng ở nửa màn hình nào và xử lý thắng thua nếu cần
+    int ball_centerY_int = ballY + ballHeight / 2;
+    
+    // Nếu bóng đang ở nửa trên (sân của Player 2) và di chuyển chậm hoặc dừng lại
+    if (ball_centerY_int <= upperHalfMaxY && std::abs(ball_dy) < 0.5f && std::abs(ball_dx) < 0.5f)
+    {
+        // Player 2 thua điểm vì không đánh trả được bóng
+        if (!game_over)
+        {
+            player1_score++;
+            updateScoreDisplay();
+            if (player1_score >= MAX_SCORE)
+            {
+                game_over = true;
+            }
+            else
+            {
+                ball_reset_pending = true;
+                reset_timer = RESET_DELAY;
+            }
+            ballX = ballX; // Giữ nguyên vị trí X
+            ballY = ballY; // Giữ nguyên vị trí Y
+            ball_dx = 0.0f;
+            ball_dy = 0.0f;
+        }
+    }
+    // Nếu bóng đang ở nửa dưới (sân của Player 1) và di chuyển chậm hoặc dừng lại
+    else if (ball_centerY_int >= lowerHalfMinY && std::abs(ball_dy) < 0.5f && std::abs(ball_dx) < 0.5f)
+    {
+        // Player 1 thua điểm vì không đánh trả được bóng
+        if (!game_over)
+        {
+            player2_score++;
+            updateScoreDisplay();
+            if (player2_score >= MAX_SCORE)
+            {
+                game_over = true;
+            }
+            else
+            {
+                ball_reset_pending = true;
+                reset_timer = RESET_DELAY;
+            }
+            ballX = ballX; // Giữ nguyên vị trí X
+            ballY = ballY; // Giữ nguyên vị trí Y
+            ball_dx = 0.0f;
+            ball_dy = 0.0f;
+        }
+    }
+    
     // Ràng buộc vị trí pad1 (nửa dưới)
     int pad1X = pad1.getX();
     int pad1Y = pad1.getY();
@@ -64,7 +129,7 @@ void GameView::handleTickEvent()
         pad2.moveTo(pad2X, pad2Y);
     }
 
-    // Xử lý va chạm với biên màn hình (ví dụ: nảy lại đơn giản)
+    // Xử lý va chạm với biên trái và phải (nảy lại)
     if (ballX <= 0)
     {
         ballX = 0;
@@ -76,17 +141,50 @@ void GameView::handleTickEvent()
         ball_dx = -ball_dx; // Đảo ngược hướng X
     }
 
+    // Xử lý va chạm với biên trên và dưới (xử lý thắng thua theo logic ping pong thật)
     if (ballY <= 0)
     {
+        // Bóng chạm biên trên (nửa màn hình của Player 2) - Player 2 thua điểm, Player 1 ghi điểm
+        if (!game_over)
+        {
+            player1_score++;
+            updateScoreDisplay();
+            if (player1_score >= MAX_SCORE)
+            {
+                game_over = true;
+                // TODO: Display "Player 1 Wins!" message
+            }
+            else
+            {
+                ball_reset_pending = true;
+                reset_timer = RESET_DELAY;
+            }
+        }
         ballY = 0;
-        ball_dy = -ball_dy; // Đảo ngược hướng Y
-        // Trong game Ping Pong thực tế, đây có thể là điểm cho đối thủ
+        ball_dx = 0.0f;
+        ball_dy = 0.0f;
     }
     else if (ballY + ballHeight >= screenHeight)
     {
+        // Bóng chạm biên dưới (nửa màn hình của Player 1) - Player 1 thua điểm, Player 2 ghi điểm
+        if (!game_over)
+        {
+            player2_score++;
+            updateScoreDisplay();
+            if (player2_score >= MAX_SCORE)
+            {
+                game_over = true;
+                // TODO: Display "Player 2 Wins!" message
+            }
+            else
+            {
+                ball_reset_pending = true;
+                reset_timer = RESET_DELAY;
+            }
+        }
         ballY = screenHeight - ballHeight;
-        ball_dy = -ball_dy; // Đảo ngược hướng Y
-        // Trong game Ping Pong thực tế, đây có thể là điểm cho người chơi
+        ball_dx = 0.0f;
+        ball_dy = 0.0f;
     }
     ball1.moveTo(ballX, ballY); // Cập nhật vị trí bóng sau khi kiểm tra biên
 
@@ -115,7 +213,7 @@ void GameView::handleTickEvent()
         float distanceY = ball_centerY - pad1_centerY;
         float distance = std::sqrt(distanceX * distanceX + distanceY * distanceY);
         
-        if (distance <= (ball_radius + pad1_radius))
+        if (distance < (ball_radius + pad1_radius))
         {
             collisionDetected = true;
             
@@ -131,10 +229,14 @@ void GameView::handleTickEvent()
                 normalY = -1.0f; // Mặc định hướng lên
             }
             
-            // Đẩy bóng ra khỏi pad1
-            float overlap = (ball_radius + pad1_radius) - distance;
+            // Đẩy bóng ra khỏi pad1 để tránh stuck
+            float overlap = (ball_radius + pad1_radius) - distance + 2.0f; // +2 để đảm bảo tách rời
             ballX += static_cast<int>(normalX * overlap);
             ballY += static_cast<int>(normalY * overlap);
+            
+            // Cập nhật lại tâm bóng sau khi đẩy
+            ball_centerX = static_cast<float>(ballX + ballWidth / 2);
+            ball_centerY = static_cast<float>(ballY + ballHeight / 2);
         }
     }
 
@@ -145,7 +247,7 @@ void GameView::handleTickEvent()
         float distanceY = ball_centerY - pad2_centerY;
         float distance = std::sqrt(distanceX * distanceX + distanceY * distanceY);
         
-        if (distance <= (ball_radius + pad2_radius))
+        if (distance < (ball_radius + pad2_radius))
         {
             collisionDetected = true;
             
@@ -161,10 +263,14 @@ void GameView::handleTickEvent()
                 normalY = 1.0f; // Mặc định hướng xuống
             }
             
-            // Đẩy bóng ra khỏi pad2
-            float overlap = (ball_radius + pad2_radius) - distance;
+            // Đẩy bóng ra khỏi pad2 để tránh stuck
+            float overlap = (ball_radius + pad2_radius) - distance + 2.0f; // +2 để đảm bảo tách rời
             ballX += static_cast<int>(normalX * overlap);
             ballY += static_cast<int>(normalY * overlap);
+            
+            // Cập nhật lại tâm bóng sau khi đẩy
+            ball_centerX = static_cast<float>(ballX + ballWidth / 2);
+            ball_centerY = static_cast<float>(ballY + ballHeight / 2);
         }
     }
 
@@ -180,12 +286,98 @@ void GameView::handleTickEvent()
         ball_dx = ball_dx - 2.0f * dotProduct * normalX;
         ball_dy = ball_dy - 2.0f * dotProduct * normalY;
         
-        // Đảm bảo tốc độ không đổi
+        // Set tốc độ 2x sau va chạm và hướng về phía đối thủ
+        float targetSpeed = ball_speed * 2.0f;
+        
+        // Đảm bảo bóng hướng về phía đối thủ
+        if (ball_centerY >= lowerHalfMinY) // Va chạm với pad1 (nửa dưới) - hướng lên trên (về pad2)
+        {
+            if (ball_dy > 0) // Nếu đang hướng xuống dưới, đảo ngược
+            {
+                ball_dy = -ball_dy;
+            }
+        }
+        else // Va chạm với pad2 (nửa trên) - hướng xuống dưới (về pad1)
+        {
+            if (ball_dy < 0) // Nếu đang hướng lên trên, đảo ngược
+            {
+                ball_dy = -ball_dy;
+            }
+        }
+        
+        // Áp dụng tốc độ mới
         float currentSpeed = std::sqrt(ball_dx * ball_dx + ball_dy * ball_dy);
         if (currentSpeed > 0.001f)
         {
-            ball_dx = (ball_dx / currentSpeed) * ball_speed;
-            ball_dy = (ball_dy / currentSpeed) * ball_speed;
+            ball_dx = (ball_dx / currentSpeed) * targetSpeed;
+            ball_dy = (ball_dy / currentSpeed) * targetSpeed;
         }
+    }
+}
+
+void GameView::resetGame()
+{
+    // Reset scores
+    player1_score = 0;
+    player2_score = 0;
+    game_over = false;
+    ball_reset_pending = false;
+    reset_timer = 0;
+    game_over_timer = 0;
+    
+    // Update score display
+    updateScoreDisplay();
+    
+    // Reset ball to center
+    resetBall();
+}
+
+void GameView::resetBall()
+{
+    // Kích thước màn hình
+    const int screenWidth = 240;
+    const int screenHeight = 320;
+    
+    // Đặt bóng ở giữa màn hình
+    int ballWidth = ball1.getWidth();
+    int ballHeight = ball1.getHeight();
+    int centerX = (screenWidth - ballWidth) / 2;
+    int centerY = (screenHeight - ballHeight) / 2;
+    
+    ball1.moveTo(centerX, centerY);
+    
+    // Thiết lập hướng di chuyển ngẫu nhiên (hoặc cố định)
+    // Hướng chéo với tốc độ cơ bản
+    ball_dx = (player1_score + player2_score) % 2 == 0 ? ball_speed : -ball_speed;
+    ball_dy = (player1_score + player2_score) % 4 < 2 ? ball_speed : -ball_speed;
+}
+
+void GameView::updateScoreDisplay()
+{
+    // Placeholder for score display update
+    // Trong TouchGFX, bạn có thể thêm TextArea widget để hiển thị điểm số
+    // Ví dụ:
+    // Unicode::snprintf(scoreBuffer, 20, "%d - %d", player1_score, player2_score);
+    // scoreText.setWildcard(scoreBuffer);
+    // scoreText.invalidate();
+    
+    // Hiện tại chỉ log điểm số (nếu có debug console)
+    // printf("Score: Player1 %d - Player2 %d\n", player1_score, player2_score);
+}
+
+void GameView::handleGameInput()
+{
+    // Placeholder for restart game input handling
+    // Trong TouchGFX, bạn có thể kiểm tra touch input hoặc button press
+    // Ví dụ: nếu có nút restart hoặc chạm vào màn hình
+    
+    // Tự động restart sau một khoảng thời gian
+    game_over_timer++;
+    
+    // Auto restart after 3 seconds (assuming 60 FPS -> 180 ticks)
+    if (game_over_timer >= 180)
+    {
+        game_over_timer = 0;
+        resetGame();
     }
 }
