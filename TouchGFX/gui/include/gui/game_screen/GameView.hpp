@@ -38,6 +38,9 @@ protected:
     int game_over_timer; // Timer for auto-restart after game over
     const int MAX_SCORE; // Score to win (e.g., 5 points)
     const int RESET_DELAY; // Delay before ball reset (in ticks)
+    bool second_hit_allowed;
+    int last_hit_tick;
+    static constexpr int SECOND_HIT_DELAY = 30;
 };
 
 #endif // GAMEVIEW_HPP

@@ -6,7 +6,7 @@
 GameView::GameView() : GameViewBase(), ball_dx(0.0f), ball_dy(0.0f), ball_speed(1.0f),
                       player1_score(0), player2_score(0), game_over(false), 
                       ball_reset_pending(false), reset_timer(0), game_over_timer(0),
-                      MAX_SCORE(5), RESET_DELAY(120)
+                      MAX_SCORE(5), RESET_DELAY(120), second_hit_allowed(false), last_hit_tick(0)
 {
 
 }
@@ -21,9 +21,9 @@ void GameView::tearDownScreen()
 {
     GameViewBase::tearDownScreen();
 }
-
 void GameView::handleTickEvent()
 {
+	last_hit_tick++;
     // Handle ball reset timer
     if (ball_reset_pending)
     {
@@ -56,7 +56,7 @@ void GameView::handleTickEvent()
     // Kích thước màn hình (giả sử 240x320 như trong cấu hình dự án)
     const int screenWidth = 240; // Hoặc this->getWidth() nếu View là toàn màn hình
     const int screenHeight = 320; // Hoặc this->getHeight()
-    const int screenCenterX = screenWidth / 2;
+//    const int screenCenterX = screenWidth / 2;
     const int screenCenterY = screenHeight / 2;
     
     // Chia màn hình thành 2 nửa
@@ -120,14 +120,35 @@ void GameView::handleTickEvent()
         pad1Y = lowerHalfMinY;
         pad1.moveTo(pad1X, pad1Y);
     }
+
+    // Giới hạn pad1 trong màn hình
+    if (pad1X < 0) pad1X = 0;
+    if (pad1X + pad1.getWidth() > screenWidth) pad1X = screenWidth - pad1.getWidth();
+    pad1.moveTo(pad1X, pad1Y);
+
+    // Ràng buộc pad1 không vượt quá đáy màn hình
+    if (pad1Y + pad1.getHeight() > screenHeight) {
+        pad1Y = screenHeight - pad1.getHeight();
+    }
+    pad1.moveTo(pad1X, pad1Y);
     
-    // Ràng buộc vị trí pad2 (nửa trên)
+    // Ràng buộc pad2 trong nửa trên và trong màn hình
     int pad2X = pad2.getX();
     int pad2Y = pad2.getY();
+    if (pad2Y < 0) {
+        pad2Y = 0;
+    }
     if (pad2Y + pad2.getHeight() > upperHalfMaxY) {
         pad2Y = upperHalfMaxY - pad2.getHeight();
-        pad2.moveTo(pad2X, pad2Y);
     }
+    pad2.moveTo(pad2X, pad2Y);
+
+    // Giới hạn pad2 trong màn hình
+    if (pad2X < 0) pad2X = 0;
+    if (pad2X + pad2.getWidth() > screenWidth) pad2X = screenWidth - pad2.getWidth();
+    pad2.moveTo(pad2X, pad2Y);
+
+
 
     // Xử lý va chạm với biên trái và phải (nảy lại)
     if (ballX <= 0)
@@ -207,7 +228,7 @@ void GameView::handleTickEvent()
     float normalX = 0.0f, normalY = 0.0f; // Vector pháp tuyến tại điểm va chạm
 
     // Kiểm tra va chạm với pad1 (chỉ trong nửa dưới màn hình)
-    if (ballY >= lowerHalfMinY)
+    if ((ballY >= lowerHalfMinY && ball_dy > 0) || second_hit_allowed)
     {
         float distanceX = ball_centerX - pad1_centerX;
         float distanceY = ball_centerY - pad1_centerY;
@@ -241,7 +262,7 @@ void GameView::handleTickEvent()
     }
 
     // Kiểm tra va chạm với pad2 (chỉ trong nửa trên màn hình)
-    if (!collisionDetected && ballY + ballHeight <= upperHalfMaxY)
+    if ((!collisionDetected && (ballY + ballHeight <= upperHalfMaxY) && ball_dy < 0) || second_hit_allowed)
     {
         float distanceX = ball_centerX - pad2_centerX;
         float distanceY = ball_centerY - pad2_centerY;
@@ -279,16 +300,16 @@ void GameView::handleTickEvent()
         // Tính toán phản xạ dựa trên vector pháp tuyến
         // Công thức phản xạ: v' = v - 2(v·n)n
         // trong đó v là vector vận tốc cũ, n là vector pháp tuyến, v' là vector vận tốc mới
-        
+
         float dotProduct = ball_dx * normalX + ball_dy * normalY;
-        
+
         // Tính vận tốc mới sau phản xạ
         ball_dx = ball_dx - 2.0f * dotProduct * normalX;
         ball_dy = ball_dy - 2.0f * dotProduct * normalY;
-        
+
         // Set tốc độ 2x sau va chạm và hướng về phía đối thủ
-        float targetSpeed = ball_speed * 2.0f;
-        
+        float targetSpeed = ball_speed * 4.0f;
+
         // Đảm bảo bóng hướng về phía đối thủ
         if (ball_centerY >= lowerHalfMinY) // Va chạm với pad1 (nửa dưới) - hướng lên trên (về pad2)
         {
@@ -304,7 +325,7 @@ void GameView::handleTickEvent()
                 ball_dy = -ball_dy;
             }
         }
-        
+
         // Áp dụng tốc độ mới
         float currentSpeed = std::sqrt(ball_dx * ball_dx + ball_dy * ball_dy);
         if (currentSpeed > 0.001f)
@@ -312,6 +333,42 @@ void GameView::handleTickEvent()
             ball_dx = (ball_dx / currentSpeed) * targetSpeed;
             ball_dy = (ball_dy / currentSpeed) * targetSpeed;
         }
+        // Nếu bóng đi quá ngang (góc nhỏ hơn 45 độ), thì cho phép chạm nhiều lần
+        float angleThreshold = 1.0f;
+        bool tooHorizontal = std::abs(ball_dx) > 0.001f && (std::abs(ball_dy) / std::abs(ball_dx)) < angleThreshold;
+
+        if (tooHorizontal)
+        {
+            if (second_hit_allowed)
+            {
+                // Được phép đánh lại — xử lý phản xạ như bình thường
+                last_hit_tick = 0;
+            }
+            else
+            {
+                if (last_hit_tick >= SECOND_HIT_DELAY)
+                {
+                    second_hit_allowed = true;
+                    last_hit_tick = 0;
+                    // Xử lý phản xạ như bình thường
+                }
+                else
+                {
+                    // ❗ Cho phép bóng tiếp tục bay nhưng KHÔNG phản xạ lần nữa
+                    // Bỏ qua xử lý phản xạ, nhưng KHÔNG return
+                    return; // ← Chặn phản xạ nhưng vẫn để bóng bay thoát ra
+                }
+            }
+        }
+        else
+        {
+            second_hit_allowed = false;
+            last_hit_tick = 0; // reset timer vì hướng bóng đã thay đổi
+        }
+    }
+    if (!game_over && !ball_reset_pending)
+    {
+        last_hit_tick++;
     }
 }
 
@@ -381,3 +438,4 @@ void GameView::handleGameInput()
         resetGame();
     }
 }
+
