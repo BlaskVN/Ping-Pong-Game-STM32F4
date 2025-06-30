@@ -1,6 +1,22 @@
 #include <gui/game_screen/GameView.hpp>
 #include <touchgfx/widgets/Box.hpp> // Để sử dụng touchgfx::Rect, cần include Box.hpp
 #include <cmath>             // Cần thiết cho std::sqrt và std::sin
+#include "main.h"
+
+extern uint16_t pad1Xleft;
+extern uint16_t pad1Xright;
+extern uint16_t pad1Yup;
+extern uint16_t pad1Ydown;
+
+extern uint16_t pad2Xleft;
+extern uint16_t pad2Xright;
+extern uint16_t pad2Yup;
+extern uint16_t pad2Ydown;
+
+extern uint16_t pad1X;
+extern uint16_t pad1Y;
+
+
 
 // Khởi tạo GameView, bao gồm cả ball_speed và game state
 GameView::GameView() : GameViewBase(), ball_dx(0.0f), ball_dy(0.0f), ball_speed(1.0f),
@@ -33,6 +49,10 @@ void GameView::tearDownScreen()
 }
 void GameView::handleTickEvent()
 {
+	//Vi tri hien tai cua Pad 2 - namng
+
+
+
 	last_hit_tick++;
     // Handle ball reset timer
     if (ball_reset_pending)

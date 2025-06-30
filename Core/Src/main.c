@@ -75,6 +75,8 @@ LTDC_HandleTypeDef hltdc;
 
 SPI_HandleTypeDef hspi5;
 
+UART_HandleTypeDef huart1;
+
 SDRAM_HandleTypeDef hsdram1;
 
 /* Definitions for defaultTask */
@@ -140,6 +142,16 @@ uint16_t pad1Xright = 0;
 uint16_t pad1Yup = 0;
 uint16_t pad1Ydown = 0;
 
+uint16_t pad2Xleft = 0;
+uint16_t pad2Xright = 0;
+uint16_t pad2Yup = 0;
+uint16_t pad2Ydown = 0;
+
+uint16_t pad2X = 0;
+uint16_t pad2Y = 0;
+
+uint16_t pad1X = 0;
+uint16_t pad1Y = 0;
 
 /* USER CODE END PV */
 
@@ -154,6 +166,7 @@ static void MX_FMC_Init(void);
 static void MX_LTDC_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_ADC1_Init(void);
+static void MX_USART1_UART_Init(void);
 void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
 void StartTaskJoystickDMA(void *argument);
@@ -235,6 +248,7 @@ int main(void)
   MX_LTDC_Init();
   MX_DMA2D_Init();
   MX_ADC1_Init();
+  MX_USART1_UART_Init();
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
@@ -645,6 +659,39 @@ static void MX_SPI5_Init(void)
     isRevD = 1;
   }
   /* USER CODE END SPI5_Init 2 */
+
+}
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart1.Instance = USART1;
+  huart1.Init.BaudRate = 115200;
+  huart1.Init.WordLength = UART_WORDLENGTH_8B;
+  huart1.Init.StopBits = UART_STOPBITS_1;
+  huart1.Init.Parity = UART_PARITY_NONE;
+  huart1.Init.Mode = UART_MODE_TX_RX;
+  huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart1.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
 
 }
 
@@ -1191,14 +1238,14 @@ void StartTaskButton(void *argument)
   for(;;)
   {
 
-	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15) == GPIO_PIN_SET){
+	  //pad2Yup - Di chuyen Pad 2 len gan luoi (Y++)
+	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15) == GPIO_PIN_SET ){
 
 		  uint8_t count = osMessageQueueGetCount(&myQueueButtonHandle);
 
 		  if(count < 2){
 
-
-//			  osMessageQueuePut(myQueueButtonHandle, )
+//			  osMessageQueuePut(myQueueButtonHandle,  )
 
 		  }
 
@@ -1206,16 +1253,20 @@ void StartTaskButton(void *argument)
 
 	  }
 
+	  //pad2Ydown - Di chuyen Pad 2 xa luoi (Y--)
 	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_SET){
 
 
 	  }
 
+	  //pad2Xleft - Di chuyen Pad 2 sang trai ben nguoi choi Pad 2 (X++)
 	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET){
 
 
 	  }
 
+
+	  //pad2Xright - Di chuyen Pad 2 sang phai ben nguoi choi Pad 2 (X--)
 	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET){
 
 
