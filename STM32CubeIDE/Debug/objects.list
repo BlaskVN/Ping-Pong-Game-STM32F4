@@ -46,6 +46,7 @@
 "./Application/User/generated/VectorFontRendererBuffers.o"
 "./Application/User/generated/ballBase.o"
 "./Application/User/generated/gameBackgroundBase.o"
+"./Application/User/generated/image_alternate_theme_images_widgets_textprogress_backgrounds_rounded_neutral.o"
 "./Application/User/generated/image_glass_theme_images_widgets_button_regular_height_50_small_round_active.o"
 "./Application/User/generated/image_glass_theme_images_widgets_button_regular_height_50_small_round_pressed.o"
 "./Application/User/generated/image_icon_theme_images_action_home_filled_30_30_000000.svg.o"
