@@ -137,21 +137,30 @@ uint32_t JoystickPad2Y;
 volatile uint8_t adc1_ready_flag = 0;
 volatile uint8_t adc2_ready_flag = 0;
 
-uint16_t pad1Xleft = 0;
-uint16_t pad1Xright = 0;
-uint16_t pad1Yup = 0;
-uint16_t pad1Ydown = 0;
+uint8_t pad1Xleft = 'C';
+uint8_t pad1Xright = 'D';
+uint8_t pad1Yup = 'A';
+uint8_t pad1Ydown = 'B';
 
-uint16_t pad2Xleft = 0;
-uint16_t pad2Xright = 0;
-uint16_t pad2Yup = 0;
-uint16_t pad2Ydown = 0;
+uint8_t pad2Xleft = 'C';
+uint8_t pad2Xright = 'D';
+uint8_t pad2Yup = 'A';
+uint8_t pad2Ydown = 'B';
 
 uint16_t pad2X = 0;
 uint16_t pad2Y = 0;
 
 uint16_t pad1X = 0;
 uint16_t pad1Y = 0;
+
+int min_Pad1_movement_X;
+int max_Pad1_movement_X;
+int min_Pad1_movement_Y;
+int max_Pad1_movement_Y;
+
+
+uint32_t jtPad1_X;
+uint32_t jtPad1_Y;
 
 /* USER CODE END PV */
 
@@ -209,6 +218,16 @@ static LCD_DrvTypeDef* LcdDrv;
 
 uint32_t I2c3Timeout = I2C3_TIMEOUT_MAX; /*<! Value of Timeout when I2C communication fails */
 uint32_t Spi5Timeout = SPI5_TIMEOUT_MAX; /*<! Value of Timeout when SPI communication fails */
+
+
+uint32_t mapJoystick(uint32_t value, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max) {
+	if(value<in_min) value = in_min;
+
+	if(value > in_max) value = in_max;
+
+    return (value - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -275,10 +294,10 @@ int main(void)
 
   /* Create the queue(s) */
   /* creation of myQueueJoystick */
-  myQueueJoystickHandle = osMessageQueueNew (16, sizeof(uint16_t), &myQueueJoystick_attributes);
+  myQueueJoystickHandle = osMessageQueueNew (16, sizeof(uint8_t), &myQueueJoystick_attributes);
 
   /* creation of myQueueButton */
-  myQueueButtonHandle = osMessageQueueNew (16, sizeof(uint16_t), &myQueueButton_attributes);
+  myQueueButtonHandle = osMessageQueueNew (16, sizeof(uint8_t), &myQueueButton_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -414,7 +433,7 @@ static void MX_ADC1_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_1;
   sConfig.Rank = 1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_112CYCLES;
+  sConfig.SamplingTime = ADC_SAMPLETIME_84CYCLES;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
@@ -795,6 +814,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12|GPIO_PIN_13, GPIO_PIN_RESET);
 
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOG, GPIO_PIN_13|GPIO_PIN_14, GPIO_PIN_RESET);
+
   /*Configure GPIO pins : VSYNC_FREQ_Pin RENDER_TIME_Pin FRAME_RATE_Pin MCU_ACTIVE_Pin */
   GPIO_InitStruct.Pin = VSYNC_FREQ_Pin|RENDER_TIME_Pin|FRAME_RATE_Pin|MCU_ACTIVE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
@@ -816,8 +838,8 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : PB12 PB13 PB14 PB15 */
-  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15;
+  /*Configure GPIO pins : PB12 PB13 */
+  GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -828,6 +850,19 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PD4 PD5 */
+  GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PG13 PG14 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_14;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
   /* USER CODE END MX_GPIO_Init_2 */
@@ -1195,33 +1230,62 @@ void StartDefaultTask(void *argument)
 * @retval None
 */
 /* USER CODE END Header_StartTaskJoystickDMA */
-void StartTaskJoystickDMA(void *argument)
-{
-  /* USER CODE BEGIN StartTaskJoystickDMA */
-  /* Infinite loop */
-  for(;;)
-  {
+void StartTaskJoystickDMA(void *argument) {
+	/* USER CODE BEGIN StartTaskJoystickDMA */
+	/* Infinite loop */
+	for (;;) {
 
-	  char buf[40];
+		char buf[40];
 
-	  			if(adc1_ready_flag == 1){
+		if (adc1_ready_flag == 1) {
 
-	  			adc1_ready_flag = 0;
+			adc1_ready_flag = 0;
 
-	  			JoystickPad1X = adc1_buffer[0];
-	  			JoystickPad1Y = adc1_buffer[1];
+			JoystickPad1X = adc1_buffer[0];
+			JoystickPad1Y = adc1_buffer[1];
 
-	  			sprintf(buf, "ADC1: %3d - %3d\r\n", JoystickPad1X, JoystickPad1Y);
+			jtPad1_X = mapJoystick(JoystickPad1X, 50, 980, min_Pad1_movement_X, max_Pad1_movement_X);
 
-	  			HAL_UART_Transmit(&huart1, (const char*) buf, strlen(buf), HAL_MAX_DELAY);
+			jtPad1_Y = mapJoystick(JoystickPad1Y, 50, 980, min_Pad1_movement_Y, max_Pad1_movement_Y);
 
+//			sprintf(buf, "ADC1: %3d - %3d\r\n", jtPad1_X, jtPad1_Y);
+//
+//			HAL_UART_Transmit(&huart1, (const char*) buf, strlen(buf),
+//			HAL_MAX_DELAY);
 
-	  			}
+			uint32_t count = osMessageQueueGetCount(myQueueJoystickHandle);
 
-	  			vTaskDelay(pdMS_TO_TICKS(500));
+			if (count < 2) {
+				char msg = 'J';
+//				if (jtPad1_X > 4 && jtPad1_X <= 255 ) {//Sang phai Pad 1
+//
+//					osMessageQueuePut(myQueueJoystickHandle, &pad1Xright, 0,0);
+//
+//				}else if (jtPad1_X >= 0 && jtPad1_X < 2) {//Sang trai Pad 1
+//
+//					osMessageQueuePut(myQueueJoystickHandle, &pad1Xleft, 0,0);
+//
+//				}else if (jtPad1_Y > 4 && jtPad1_Y <= 255) {//Len sat luoi Pad 1
+//
+//					osMessageQueuePut(myQueueJoystickHandle, &pad1Yup, 0,0);
+//
+//				}else if (jtPad1_Y < 3 && jtPad1_Y >= 0) {//Ra xa luoi Pad 1
+//
+//					osMessageQueuePut(myQueueJoystickHandle, &pad1Ydown, 0,0);
+//
+//				}
+
+				osMessageQueuePut(myQueueJoystickHandle, &msg, 0,0);
+//				osMessageQueuePut(myQueueJoystickHandle, &pad1Ydown, 0,0);
+
+			}
+
+		}
+
+		vTaskDelay(pdMS_TO_TICKS(20));
 //    osDelay(1);
-  }
-  /* USER CODE END StartTaskJoystickDMA */
+	}
+	/* USER CODE END StartTaskJoystickDMA */
 }
 
 /* USER CODE BEGIN Header_StartTaskButton */
@@ -1234,49 +1298,81 @@ void StartTaskJoystickDMA(void *argument)
 void StartTaskButton(void *argument)
 {
   /* USER CODE BEGIN StartTaskButton */
-  /* Infinite loop */
-  for(;;)
-  {
 
-	  //pad2Yup - Di chuyen Pad 2 len gan luoi (Y++)
-	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_15) == GPIO_PIN_SET ){
+	HAL_GPIO_WritePin(GPIOG, GPIO_PIN_13, GPIO_PIN_SET);
 
-		  uint8_t count = osMessageQueueGetCount(&myQueueButtonHandle);
+	/* Infinite loop */
+	for (;;) {
 
-		  if(count < 2){
+		//pad2Yup - Di chuyen Pad 2 len gan luoi (Y++)
+		if (HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_5) == GPIO_PIN_SET) {
+			HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_13);
 
-//			  osMessageQueuePut(myQueueButtonHandle,  )
+			uint32_t count = osMessageQueueGetCount(myQueueButtonHandle);
 
-		  }
+			if (count < 2) {
 
+				osMessageQueuePut(myQueueButtonHandle, &pad2Yup, 0, 0);
 
+			}
 
-	  }
+		}
 
-	  //pad2Ydown - Di chuyen Pad 2 xa luoi (Y--)
-	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_14) == GPIO_PIN_SET){
+		//pad2Ydown - Di chuyen Pad 2 xa luoi (Y--)
+		if (HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_4) == GPIO_PIN_SET) {
+			HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_13);
 
+			uint32_t count = osMessageQueueGetCount(myQueueButtonHandle);
 
-	  }
+			if (count < 2) {
 
-	  //pad2Xleft - Di chuyen Pad 2 sang trai ben nguoi choi Pad 2 (X++)
-	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET){
+				osMessageQueuePut(myQueueButtonHandle, &pad2Ydown, 0, 0);
 
+			}
 
-	  }
+		}
 
+		//pad2Xleft - Di chuyen Pad 2 sang trai ben nguoi choi Pad 2 (X++)
+		if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_13) == GPIO_PIN_SET) {
 
-	  //pad2Xright - Di chuyen Pad 2 sang phai ben nguoi choi Pad 2 (X--)
-	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET){
+			HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_13);
 
+			uint32_t count = osMessageQueueGetCount(myQueueButtonHandle);
 
-	  }
+			if (count < 2) {
 
+				osMessageQueuePut(myQueueButtonHandle, &pad2Xleft, 0, 0);
 
-		vTaskDelay(pdMS_TO_TICKS(100));
+			}
+
+		}
+
+		//pad2Xright - Di chuyen Pad 2 sang phai ben nguoi choi Pad 2 (X--)
+		if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_12) == GPIO_PIN_SET) {
+
+			HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_13);
+
+			uint32_t count = osMessageQueueGetCount(myQueueButtonHandle);
+
+			if (count < 2) {
+
+				osMessageQueuePut(myQueueButtonHandle, &pad2Xright, 0, 0);
+
+			}
+		}
+
+		uint32_t count = osMessageQueueGetCount(myQueueButtonHandle);
+		if (count < 2) {
+
+			uint8_t nt = 'E';
+			osMessageQueuePut(myQueueButtonHandle,&nt, 0, 0);
+
+		}
+
+		vTaskDelay(pdMS_TO_TICKS(20));
 
 //    osDelay(1);
-  }
+	}
   /* USER CODE END StartTaskButton */
 }
 

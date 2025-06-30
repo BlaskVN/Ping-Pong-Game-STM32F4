@@ -20,6 +20,8 @@ public:
     void resetBall(); // Reset ball to center position
     void updateScoreDisplay(); // Update score display on UI
     void handleGameInput(); // Handle input when game is over (restart)
+    void handlePad2Movement(); // Handle pad2 movement from button queue
+    void handlePad1Movement();
     int getPlayer1Score() const { return player1_score; }
     int getPlayer2Score() const { return player2_score; }
     bool isGameOver() const { return game_over; }

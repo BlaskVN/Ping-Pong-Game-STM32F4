@@ -2,6 +2,7 @@
 #include <touchgfx/widgets/Box.hpp> // Để sử dụng touchgfx::Rect, cần include Box.hpp
 #include <cmath>             // Cần thiết cho std::sqrt và std::sin
 #include "main.h"
+#include "cmsis_os.h"
 
 extern uint16_t pad1Xleft;
 extern uint16_t pad1Xright;
@@ -16,6 +17,20 @@ extern uint16_t pad2Ydown;
 extern uint16_t pad1X;
 extern uint16_t pad1Y;
 
+uint16_t pad2_X;
+uint16_t pad2_Y;
+
+extern osMessageQueueId_t myQueueButtonHandle;
+extern osMessageQueueId_t myQueueJoystickHandle;
+
+
+extern int min_Pad1_movement_X;
+extern int max_Pad1_movement_X;
+extern int min_Pad1_movement_Y;
+extern int max_Pad1_movement_Y;
+
+extern uint32_t jtPad1_X;
+extern uint32_t jtPad1_Y;
 
 
 // Khởi tạo GameView, bao gồm cả ball_speed và game state
@@ -40,6 +55,20 @@ void GameView::setupScreen()
     pad1_Win.setVisible(false);
     pad2_Win.setVisible(false);
     
+    const int screenWidth = 240; // Hoặc this->getWidth() nếu View là toàn màn hình
+	const int screenHeight = 320; // Hoặc this->getHeight()
+	const int screenCenterY = screenHeight / 2;
+
+	// Chia màn hình thành 2 nửa
+	const int upperHalfMaxY = screenCenterY; // Nửa trên: từ 0 đến screenCenterY
+
+	min_Pad1_movement_Y = static_cast<int>(pad1.getHeight() / 2) + upperHalfMaxY;
+	max_Pad1_movement_Y = screenHeight - static_cast<int>(pad1.getHeight() / 2);
+
+	min_Pad1_movement_X = static_cast<int>(pad1.getWidth() / 2);
+	max_Pad1_movement_X = screenWidth - static_cast<int>(pad1.getWidth() / 2);
+
+
     resetGame(); // Initialize game state
 }
 
@@ -47,11 +76,71 @@ void GameView::tearDownScreen()
 {
     GameViewBase::tearDownScreen();
 }
+
+void GameView::handlePad1Movement()
+{
+    pad1.setTouchable(false);
+    uint16_t cnt = osMessageQueueGetCount(myQueueJoystickHandle);
+    if (cnt>0)
+    {
+        uint8_t movement_cmd;
+        osMessageQueueGet(myQueueJoystickHandle, &movement_cmd, NULL, 0);
+
+//        int x = pad1.getX();
+//        int y = pad1.getY();
+//
+//        switch(movement_cmd) {
+//          case 'A': y -= 10; break; // UP
+//          case 'B': y += 10; break; // DOWN
+//          case 'C': x -= 10; break; // LEFT
+//          case 'D': x += 10; break; // RIGHT
+//          default: return;
+//        }
+        if(movement_cmd == 'J'){
+        pad1.moveTo(jtPad1_X , jtPad1_Y);
+        pad1.invalidate();
+        }
+    }
+}
+
+
+void GameView::handlePad2Movement()
+{
+    pad2.setTouchable(false);
+    uint16_t cnt = osMessageQueueGetCount(myQueueButtonHandle);
+    if (cnt>0)
+    {
+        uint8_t movement_cmd;
+        osMessageQueueGet(myQueueButtonHandle, &movement_cmd, NULL, 0);
+
+        int x = pad2.getX();
+        int y = pad2.getY();
+
+        switch(movement_cmd) {
+          case 'A': y += 10; break; // UP
+          case 'B': y -= 10; break; // DOWN
+          case 'C': x -= 10; break; // LEFT
+          case 'D': x += 10; break; // RIGHT
+          default: return;
+        }
+
+        pad2.moveTo(x,y);
+        pad2.invalidate();
+    }
+}
+
 void GameView::handleTickEvent()
 {
 	//Vi tri hien tai cua Pad 2 - namng
 
+	pad2_X = pad2.getX();
+	pad2_Y = pad2.getY();
 
+	//Di chuyen Pad 2
+    handlePad2Movement();
+
+	//Di chuyen Pad 1
+    handlePad1Movement();
 
 	last_hit_tick++;
     // Handle ball reset timer
@@ -406,6 +495,9 @@ void GameView::handleTickEvent()
     {
         last_hit_tick++;
     }
+
+
+
 }
 
 void GameView::resetGame()
