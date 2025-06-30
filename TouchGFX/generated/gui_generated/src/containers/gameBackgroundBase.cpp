@@ -12,17 +12,17 @@ gameBackgroundBase::gameBackgroundBase()
     background.setColor(touchgfx::Color::getColorFromRGB(245, 206, 75));
     add(background);
 
-    boxWithBorder1.setPosition(48, 28, 145, 265);
+    boxWithBorder1.setPosition(0, 0, 240, 320);
     boxWithBorder1.setColor(touchgfx::Color::getColorFromRGB(255, 127, 90));
     boxWithBorder1.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     boxWithBorder1.setBorderSize(5);
     add(boxWithBorder1);
 
-    box1.setPosition(117, 33, 6, 255);
+    box1.setPosition(120, 5, 3, 310);
     box1.setColor(touchgfx::Color::getColorFromRGB(254, 168, 109));
     add(box1);
 
-    boxWithBorder2.setPosition(50, 155, 140, 10);
+    boxWithBorder2.setPosition(0, 156, 240, 9);
     boxWithBorder2.setColor(touchgfx::Color::getColorFromRGB(255, 255, 255));
     boxWithBorder2.setBorderColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
     boxWithBorder2.setBorderSize(3);

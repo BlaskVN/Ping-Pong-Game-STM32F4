@@ -28,7 +28,7 @@ GameViewBase::GameViewBase() :
     add(ball1);
 
     pad1.setSVG(SVG_PING_PONG_SVGREPO_COM_ID);
-    pad1.setPosition(155, 251, 58, 55);
+    pad1.setPosition(167, 265, 58, 55);
     pad1.setScale(0.1f, 0.1f);
     pad1.setImagePosition(3, 3);
     pad1.setRotationCenter(25, 25);
@@ -36,7 +36,7 @@ GameViewBase::GameViewBase() :
     add(pad1);
 
     pad2.setSVG(SVG_PING_PONG_SVGREPO_COM_ID);
-    pad2.setPosition(27, 0, 54, 54);
+    pad2.setPosition(19, 0, 54, 54);
     pad2.setScale(0.1f, 0.1f);
     pad2.setImagePosition(-3, -3);
     pad2.setRotationCenter(25, 25);

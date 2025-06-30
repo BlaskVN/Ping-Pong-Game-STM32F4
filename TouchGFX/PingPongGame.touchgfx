@@ -186,8 +186,8 @@
           {
             "Type": "SvgImage",
             "Name": "pad1",
-            "X": 155,
-            "Y": 251,
+            "X": 167,
+            "Y": 265,
             "Width": 58,
             "Height": 55,
             "Image": "ping-pong-svgrepo-com.svg",
@@ -204,7 +204,7 @@
           {
             "Type": "SvgImage",
             "Name": "pad2",
-            "X": 27,
+            "X": 19,
             "Width": 54,
             "Height": 54,
             "Image": "ping-pong-svgrepo-com.svg",
@@ -272,7 +272,7 @@
             "Type": "SvgImage",
             "Name": "pad1",
             "X": 155,
-            "Y": 251,
+            "Y": 258,
             "Width": 58,
             "Height": 55,
             "Image": "ping-pong-svgrepo-com.svg",
@@ -289,7 +289,7 @@
           {
             "Type": "SvgImage",
             "Name": "pad2",
-            "X": 27,
+            "X": 26,
             "Width": 54,
             "Height": 54,
             "Image": "ping-pong-svgrepo-com.svg",
@@ -342,10 +342,8 @@
           {
             "Type": "BoxWithBorder",
             "Name": "boxWithBorder1",
-            "X": 48,
-            "Y": 28,
-            "Width": 145,
-            "Height": 265,
+            "Width": 240,
+            "Height": 320,
             "LockPosition": true,
             "Color": {
               "Red": 255,
@@ -357,10 +355,10 @@
           {
             "Type": "Box",
             "Name": "box1",
-            "X": 117,
-            "Y": 33,
-            "Width": 6,
-            "Height": 255,
+            "X": 120,
+            "Y": 5,
+            "Width": 3,
+            "Height": 310,
             "LockPosition": true,
             "Color": {
               "Red": 254,
@@ -371,10 +369,9 @@
           {
             "Type": "BoxWithBorder",
             "Name": "boxWithBorder2",
-            "X": 50,
-            "Y": 155,
-            "Width": 140,
-            "Height": 10,
+            "Y": 156,
+            "Width": 240,
+            "Height": 9,
             "LockPosition": true,
             "Color": {
               "Red": 255,
