@@ -40,9 +40,9 @@ void MenuViewBase::buttonCallbackHandler(const touchgfx::AbstractButton& src)
 {
     if (&src == &Start)
     {
-        //PLAY
-        //When Start clicked change screen to Game
-        //Go to Game with screen transition towards East
-        application().gotoGameScreenSlideTransitionEast();
+        //selectMode
+        //When Start clicked change screen to SelectMode
+        //Go to SelectMode with screen transition towards East
+        application().gotoSelectModeScreenSlideTransitionEast();
     }
 }

@@ -17,8 +17,12 @@
 
 #include <gui/menu_screen/MenuView.hpp>
 #include <gui/menu_screen/MenuPresenter.hpp>
+#include <gui/selectmode_screen/SelectModeView.hpp>
+#include <gui/selectmode_screen/SelectModePresenter.hpp>
 #include <gui/game_screen/GameView.hpp>
 #include <gui/game_screen/GamePresenter.hpp>
+#include <gui/gamepve_screen/GamePVEView.hpp>
+#include <gui/gamepve_screen/GamePVEPresenter.hpp>
 
 
 /**
@@ -42,8 +46,10 @@ public:
      * @note All view types used in the application MUST be added to this list!
      */
     typedef touchgfx::meta::TypeList< MenuView,
+            touchgfx::meta::TypeList< SelectModeView,
             touchgfx::meta::TypeList< GameView,
-            touchgfx::meta::Nil >
+            touchgfx::meta::TypeList< GamePVEView,
+            touchgfx::meta::Nil > > >
             > GeneratedViewTypes;
 
     /**
@@ -56,8 +62,10 @@ public:
      * @note All presenter types used in the application MUST be added to this list!
      */
     typedef touchgfx::meta::TypeList< MenuPresenter,
+            touchgfx::meta::TypeList< SelectModePresenter,
             touchgfx::meta::TypeList< GamePresenter,
-            touchgfx::meta::Nil >
+            touchgfx::meta::TypeList< GamePVEPresenter,
+            touchgfx::meta::Nil > > >
             > GeneratedPresenterTypes;
 
     /**
