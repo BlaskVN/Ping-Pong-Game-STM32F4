@@ -15,6 +15,8 @@
 #include <touchgfx/mixins/MoveAnimator.hpp>
 #include <touchgfx/mixins/Draggable.hpp>
 #include <touchgfx/widgets/SVGImage.hpp>
+#include <touchgfx/containers/progress_indicators/TextProgress.hpp>
+#include <touchgfx/widgets/TextArea.hpp>
 
 class GamePVEViewBase : public touchgfx::View<GamePVEPresenter>
 {
@@ -37,6 +39,10 @@ protected:
     touchgfx::Draggable< touchgfx::MoveAnimator< ball > > ball1;
     touchgfx::Draggable< touchgfx::MoveAnimator< touchgfx::SVGImage > > pad1;
     touchgfx::Draggable< touchgfx::MoveAnimator< touchgfx::SVGImage > > pad2;
+    touchgfx::TextProgress point_pad1;
+    touchgfx::TextProgress point_pad2;
+    touchgfx::TextArea pad1_Win;
+    touchgfx::TextArea pad1_Lose;
 
 private:
 

@@ -43,6 +43,15 @@ GamePVEView::GamePVEView()
 void GamePVEView::setupScreen()
 {
     GamePVEViewBase::setupScreen();
+    
+    // Thiết lập range cho TextProgress widgets
+    // Range từ 0 đến MAX_SCORE (5 điểm)
+    point_pad1.setRange(0, MAX_SCORE);
+    point_pad2.setRange(0, MAX_SCORE);
+
+    pad1_Win.setVisible(false);
+    pad1_Lose.setVisible(false);
+    
     resetGame(); // Initialize game state
 }
 
@@ -110,6 +119,8 @@ void GamePVEView::handleTickEvent()
             if (player1_score >= MAX_SCORE)
             {
                 game_over = true;
+                pad1_Win.setVisible(true);
+                pad1_Win.invalidate();
             }
             else
             {
@@ -133,6 +144,8 @@ void GamePVEView::handleTickEvent()
             if (ai_score >= MAX_SCORE)
             {
                 game_over = true;
+                pad1_Lose.setVisible(true);
+                pad1_Lose.invalidate();
             }
             else
             {
@@ -212,6 +225,8 @@ void GamePVEView::handleTickEvent()
             if (player1_score >= MAX_SCORE)
             {
                 game_over = true;
+                pad1_Win.setVisible(true); // Hiển thị thông báo Human Player thắng
+                pad1_Win.invalidate();
             }
             else
             {
@@ -233,6 +248,8 @@ void GamePVEView::handleTickEvent()
             if (ai_score >= MAX_SCORE)
             {
                 game_over = true;
+                pad1_Lose.setVisible(true); // Hiển thị thông báo Human Player thua
+                pad1_Lose.invalidate();
             }
             else
             {
@@ -459,7 +476,13 @@ void GamePVEView::resetGame()
     reset_timer = 0;
     game_over_timer = 0;
 
-    // Update score display
+    // Ẩn các thông báo thắng/thua
+    pad1_Win.setVisible(false);
+    pad1_Lose.setVisible(false);
+    pad1_Win.invalidate();
+    pad1_Lose.invalidate();
+
+    // Update score display on TextProgress widgets
     updateScoreDisplay();
 
     // Reset ball to center
@@ -487,12 +510,14 @@ void GamePVEView::resetBall()
 
 void GamePVEView::updateScoreDisplay()
 {
-    // Placeholder for score display update
-    // In TouchGFX, you can add TextArea widget to display scores
-    // Example:
-    // Unicode::snprintf(scoreBuffer, 20, "Player: %d - AI: %d", player1_score, ai_score);
-    // scoreText.setWildcard(scoreBuffer);
-    // scoreText.invalidate();
+    // Cập nhật điểm số cho TextProgress widgets
+    // point_pad1 hiển thị điểm của human player (pad dưới)
+    point_pad1.setValue(player1_score);
+    point_pad1.invalidate();
+    
+    // point_pad2 hiển thị điểm của AI (pad trên)
+    point_pad2.setValue(ai_score);
+    point_pad2.invalidate();
 }
 
 void GamePVEView::handleGameInput()
@@ -506,4 +531,7 @@ void GamePVEView::handleGameInput()
         game_over_timer = 0;
         resetGame();
     }
+    
+    // Note: Touch input handling for restart can be added here if needed
+    // For example: if (touchDetected) { resetGame(); }
 }
