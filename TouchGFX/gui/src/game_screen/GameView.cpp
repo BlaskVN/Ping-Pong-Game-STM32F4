@@ -14,6 +14,16 @@ GameView::GameView() : GameViewBase(), ball_dx(0.0f), ball_dy(0.0f), ball_speed(
 void GameView::setupScreen()
 {
     GameViewBase::setupScreen();
+    
+    // Thiết lập range cho TextProgress widgets
+    // Range từ 0 đến MAX_SCORE (5 điểm)
+    point_pad1.setRange(0, MAX_SCORE);
+    point_pad2.setRange(0, MAX_SCORE);
+    
+    // Ban đầu ẩn các thông báo chiến thắng
+    pad1_Win.setVisible(false);
+    pad2_Win.setVisible(false);
+    
     resetGame(); // Initialize game state
 }
 
@@ -77,6 +87,8 @@ void GameView::handleTickEvent()
             if (player1_score >= MAX_SCORE)
             {
                 game_over = true;
+                pad1_Win.setVisible(true); // Hiển thị thông báo Player 1 thắng
+                pad1_Win.invalidate();
             }
             else
             {
@@ -100,6 +112,8 @@ void GameView::handleTickEvent()
             if (player2_score >= MAX_SCORE)
             {
                 game_over = true;
+                pad2_Win.setVisible(true); // Hiển thị thông báo Player 2 thắng
+                pad2_Win.invalidate();
             }
             else
             {
@@ -173,7 +187,8 @@ void GameView::handleTickEvent()
             if (player1_score >= MAX_SCORE)
             {
                 game_over = true;
-                // TODO: Display "Player 1 Wins!" message
+                pad1_Win.setVisible(true); // Hiển thị thông báo Player 1 thắng
+                pad1_Win.invalidate();
             }
             else
             {
@@ -195,7 +210,8 @@ void GameView::handleTickEvent()
             if (player2_score >= MAX_SCORE)
             {
                 game_over = true;
-                // TODO: Display "Player 2 Wins!" message
+                pad2_Win.setVisible(true); // Hiển thị thông báo Player 2 thắng
+                pad2_Win.invalidate();
             }
             else
             {
@@ -382,7 +398,13 @@ void GameView::resetGame()
     reset_timer = 0;
     game_over_timer = 0;
     
-    // Update score display
+    // Ẩn các thông báo chiến thắng
+    pad1_Win.setVisible(false);
+    pad2_Win.setVisible(false);
+    pad1_Win.invalidate();
+    pad2_Win.invalidate();
+    
+    // Update score display on TextProgress widgets
     updateScoreDisplay();
     
     // Reset ball to center
@@ -411,15 +433,14 @@ void GameView::resetBall()
 
 void GameView::updateScoreDisplay()
 {
-    // Placeholder for score display update
-    // Trong TouchGFX, bạn có thể thêm TextArea widget để hiển thị điểm số
-    // Ví dụ:
-    // Unicode::snprintf(scoreBuffer, 20, "%d - %d", player1_score, player2_score);
-    // scoreText.setWildcard(scoreBuffer);
-    // scoreText.invalidate();
+    // Cập nhật điểm số cho TextProgress widgets
+    // point_pad1 hiển thị điểm của player 1 (pad dưới)
+    point_pad1.setValue(player1_score);
+    point_pad1.invalidate();
     
-    // Hiện tại chỉ log điểm số (nếu có debug console)
-    // printf("Score: Player1 %d - Player2 %d\n", player1_score, player2_score);
+    // point_pad2 hiển thị điểm của player 2 (pad trên)
+    point_pad2.setValue(player2_score);
+    point_pad2.invalidate();
 }
 
 void GameView::handleGameInput()
