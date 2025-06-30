@@ -6,6 +6,30 @@
   <Texts>
     <TextGroup Id="Group1" />
     <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_HV8C" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">LOSER</Translation>
+      </Text>
+      <Text Id="__SingleUse_AM7H" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">WINNER</Translation>
+      </Text>
+      <Text Id="__SingleUse_VEI0" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">WINNER</Translation>
+      </Text>
+      <Text Id="__SingleUse_ADVQ" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">WINNER</Translation>
+      </Text>
+      <Text Id="__SingleUse_WD6J" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">&lt;&gt; </Translation>
+      </Text>
+      <Text Id="__SingleUse_YPUN" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">&lt;&gt; </Translation>
+      </Text>
+      <Text Id="__SingleUse_YPOF" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">&lt;&gt; </Translation>
+      </Text>
+      <Text Id="__SingleUse_WQMU" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">&lt;&gt; </Translation>
+      </Text>
       <Text Id="__SingleUse_DZAG" Alignment="Center" TypographyId="Blod">
         <Translation Language="GB">PVE</Translation>
       </Text>
@@ -18,7 +42,7 @@
     </TextGroup>
   </Texts>
   <Typographies>
-    <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WidgetWildcardCharacters="0123456789." />
     <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Small" Font="verdana.ttf" Size="10" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Blod" Font="arialbd.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />

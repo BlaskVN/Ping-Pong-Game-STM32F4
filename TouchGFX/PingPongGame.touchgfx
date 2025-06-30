@@ -187,7 +187,7 @@
             "Type": "SvgImage",
             "Name": "pad1",
             "X": 167,
-            "Y": 265,
+            "Y": 259,
             "Width": 58,
             "Height": 55,
             "Image": "ping-pong-svgrepo-com.svg",
@@ -217,6 +217,72 @@
             "RotationDegrees": 180.0,
             "Draggable": true,
             "Moveable": true
+          },
+          {
+            "Type": "TextProgress",
+            "Name": "point_pad2",
+            "X": -121,
+            "Y": 110,
+            "Width": 175,
+            "Height": 50,
+            "TextId": "__SingleUse_YPOF",
+            "Color": {
+              "Red": 12,
+              "Green": 27,
+              "Blue": 55
+            },
+            "FileNameBackground": "__generated\\alternate_theme_images_widgets_textprogress_backgrounds_rounded_neutral.png",
+            "IndicatorPositionX": 12,
+            "IndicatorPositionY": 10,
+            "IndicatorPositionWidth": 274,
+            "IndicatorPositionHeight": 30,
+            "ProgressRangeMax": 100,
+            "ProgressRangeSteps": 1
+          },
+          {
+            "Type": "TextProgress",
+            "Name": "point_pad1",
+            "X": 182,
+            "Y": 160,
+            "Width": 175,
+            "Height": 50,
+            "TextId": "__SingleUse_WQMU",
+            "Color": {
+              "Red": 12,
+              "Green": 27,
+              "Blue": 55
+            },
+            "FileNameBackground": "__generated\\alternate_theme_images_widgets_textprogress_backgrounds_rounded_neutral.png",
+            "IndicatorPositionX": 12,
+            "IndicatorPositionY": 10,
+            "IndicatorPositionWidth": 50,
+            "IndicatorPositionHeight": 30,
+            "ProgressRangeMax": 100,
+            "ProgressRangeSteps": 1
+          },
+          {
+            "Type": "TextArea",
+            "Name": "pad1_Win",
+            "X": 40,
+            "Y": 210,
+            "Width": 170,
+            "Height": 41,
+            "Visible": false,
+            "TextId": "__SingleUse_ADVQ",
+            "TextRotation": "0",
+            "AutoSize": true
+          },
+          {
+            "Type": "TextArea",
+            "Name": "pad2_Win",
+            "X": 40,
+            "Y": 60,
+            "Width": 170,
+            "Height": 41,
+            "Visible": false,
+            "TextId": "__SingleUse_VEI0",
+            "TextRotation": "180",
+            "AutoSize": true
           }
         ],
         "Interactions": [
@@ -302,6 +368,72 @@
             "RotationDegrees": 180.0,
             "Draggable": true,
             "Moveable": true
+          },
+          {
+            "Type": "TextProgress",
+            "Name": "point_pad1",
+            "X": 178,
+            "Y": 160,
+            "Width": 175,
+            "Height": 50,
+            "TextId": "__SingleUse_YPUN",
+            "Color": {
+              "Red": 12,
+              "Green": 27,
+              "Blue": 55
+            },
+            "FileNameBackground": "__generated\\alternate_theme_images_widgets_textprogress_backgrounds_rounded_neutral.png",
+            "IndicatorPositionX": 12,
+            "IndicatorPositionY": 10,
+            "IndicatorPositionWidth": 45,
+            "IndicatorPositionHeight": 30,
+            "ProgressRangeMax": 100,
+            "ProgressRangeSteps": 1
+          },
+          {
+            "Type": "TextProgress",
+            "Name": "point_pad2",
+            "X": -122,
+            "Y": 110,
+            "Width": 175,
+            "Height": 50,
+            "TextId": "__SingleUse_WD6J",
+            "Color": {
+              "Red": 12,
+              "Green": 27,
+              "Blue": 55
+            },
+            "FileNameBackground": "__generated\\alternate_theme_images_widgets_textprogress_backgrounds_rounded_neutral.png",
+            "IndicatorPositionX": 12,
+            "IndicatorPositionY": 10,
+            "IndicatorPositionWidth": 281,
+            "IndicatorPositionHeight": 30,
+            "ProgressRangeMax": 100,
+            "ProgressRangeSteps": 1
+          },
+          {
+            "Type": "TextArea",
+            "Name": "pad1_Win",
+            "X": 40,
+            "Y": 217,
+            "Width": 170,
+            "Height": 41,
+            "Visible": false,
+            "TextId": "__SingleUse_AM7H",
+            "TextRotation": "0",
+            "AutoSize": true
+          },
+          {
+            "Type": "TextArea",
+            "Name": "pad1_Lose",
+            "X": 53,
+            "Y": 217,
+            "Width": 133,
+            "Height": 41,
+            "Visible": false,
+            "TextId": "__SingleUse_HV8C",
+            "TextRotation": "0",
+            "AutoSize": true
           }
         ],
         "Interactions": [

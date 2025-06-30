@@ -6,6 +6,7 @@
 #include <touchgfx/Color.hpp>
 #include <images/BitmapDatabase.hpp>
 #include<images/SVGDatabase.hpp>
+#include <texts/TextKeysAndLanguages.hpp>
 
 GamePVEViewBase::GamePVEViewBase() :
     buttonCallback(this, &GamePVEViewBase::buttonCallbackHandler)
@@ -42,6 +43,38 @@ GamePVEViewBase::GamePVEViewBase() :
     pad2.setRotationCenter(25, 25);
     pad2.setRotation(180.0f);
     add(pad2);
+
+    point_pad1.setXY(178, 160);
+    point_pad1.setProgressIndicatorPosition(12, 10, 45, 30);
+    point_pad1.setRange(0, 100, 1, 0);
+    point_pad1.setColor(touchgfx::Color::getColorFromRGB(12, 27, 55));
+    point_pad1.setTypedText(touchgfx::TypedText(T___SINGLEUSE_YPUN));
+    point_pad1.setBackground(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_TEXTPROGRESS_BACKGROUNDS_ROUNDED_NEUTRAL_ID));
+    point_pad1.setValue(0);
+    add(point_pad1);
+
+    point_pad2.setXY(-122, 110);
+    point_pad2.setProgressIndicatorPosition(12, 10, 281, 30);
+    point_pad2.setRange(0, 100, 1, 0);
+    point_pad2.setColor(touchgfx::Color::getColorFromRGB(12, 27, 55));
+    point_pad2.setTypedText(touchgfx::TypedText(T___SINGLEUSE_WD6J));
+    point_pad2.setBackground(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_TEXTPROGRESS_BACKGROUNDS_ROUNDED_NEUTRAL_ID));
+    point_pad2.setValue(0);
+    add(point_pad2);
+
+    pad1_Win.setXY(40, 217);
+    pad1_Win.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    pad1_Win.setLinespacing(0);
+    pad1_Win.setTypedText(touchgfx::TypedText(T___SINGLEUSE_AM7H));
+    pad1_Win.setVisible(false);
+    add(pad1_Win);
+
+    pad1_Lose.setXY(53, 217);
+    pad1_Lose.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    pad1_Lose.setLinespacing(0);
+    pad1_Lose.setTypedText(touchgfx::TypedText(T___SINGLEUSE_HV8C));
+    pad1_Lose.setVisible(false);
+    add(pad1_Lose);
 }
 
 GamePVEViewBase::~GamePVEViewBase()

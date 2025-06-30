@@ -6,6 +6,7 @@
 #include <touchgfx/Color.hpp>
 #include <images/BitmapDatabase.hpp>
 #include<images/SVGDatabase.hpp>
+#include <texts/TextKeysAndLanguages.hpp>
 
 GameViewBase::GameViewBase() :
     buttonCallback(this, &GameViewBase::buttonCallbackHandler)
@@ -28,7 +29,7 @@ GameViewBase::GameViewBase() :
     add(ball1);
 
     pad1.setSVG(SVG_PING_PONG_SVGREPO_COM_ID);
-    pad1.setPosition(167, 265, 58, 55);
+    pad1.setPosition(167, 259, 58, 55);
     pad1.setScale(0.1f, 0.1f);
     pad1.setImagePosition(3, 3);
     pad1.setRotationCenter(25, 25);
@@ -42,6 +43,39 @@ GameViewBase::GameViewBase() :
     pad2.setRotationCenter(25, 25);
     pad2.setRotation(180.0f);
     add(pad2);
+
+    point_pad2.setXY(-121, 110);
+    point_pad2.setProgressIndicatorPosition(12, 10, 274, 30);
+    point_pad2.setRange(0, 100, 1, 0);
+    point_pad2.setColor(touchgfx::Color::getColorFromRGB(12, 27, 55));
+    point_pad2.setTypedText(touchgfx::TypedText(T___SINGLEUSE_YPOF));
+    point_pad2.setBackground(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_TEXTPROGRESS_BACKGROUNDS_ROUNDED_NEUTRAL_ID));
+    point_pad2.setValue(0);
+    add(point_pad2);
+
+    point_pad1.setXY(182, 160);
+    point_pad1.setProgressIndicatorPosition(12, 10, 50, 30);
+    point_pad1.setRange(0, 100, 1, 0);
+    point_pad1.setColor(touchgfx::Color::getColorFromRGB(12, 27, 55));
+    point_pad1.setTypedText(touchgfx::TypedText(T___SINGLEUSE_WQMU));
+    point_pad1.setBackground(touchgfx::Bitmap(BITMAP_ALTERNATE_THEME_IMAGES_WIDGETS_TEXTPROGRESS_BACKGROUNDS_ROUNDED_NEUTRAL_ID));
+    point_pad1.setValue(0);
+    add(point_pad1);
+
+    pad1_Win.setXY(40, 210);
+    pad1_Win.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    pad1_Win.setLinespacing(0);
+    pad1_Win.setTypedText(touchgfx::TypedText(T___SINGLEUSE_ADVQ));
+    pad1_Win.setVisible(false);
+    add(pad1_Win);
+
+    pad2_Win.setXY(40, 60);
+    pad2_Win.setColor(touchgfx::Color::getColorFromRGB(0, 0, 0));
+    pad2_Win.setLinespacing(0);
+    pad2_Win.setRotation(touchgfx::TEXT_ROTATE_180);
+    pad2_Win.setTypedText(touchgfx::TypedText(T___SINGLEUSE_VEI0));
+    pad2_Win.setVisible(false);
+    add(pad2_Win);
 }
 
 GameViewBase::~GameViewBase()
