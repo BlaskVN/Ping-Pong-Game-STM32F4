@@ -34,7 +34,7 @@
         ],
         "Interactions": [
           {
-            "InteractionName": "PLAY",
+            "InteractionName": "selectMode",
             "Trigger": {
               "Type": "TriggerClicked",
               "TriggerComponent": "Start"
@@ -43,7 +43,109 @@
               "Type": "ActionGotoScreen",
               "ScreenTransitionType": "ScreenTransitionSlide",
               "ScreenTransitionDirection": "East",
+              "ActionComponent": "SelectMode"
+            }
+          }
+        ]
+      },
+      {
+        "Name": "SelectMode",
+        "Components": [
+          {
+            "Type": "CustomContainerInstance",
+            "Name": "gameBackground1",
+            "Width": 240,
+            "Height": 320,
+            "LockPosition": true,
+            "CustomContainerDefinitionName": "gameBackground"
+          },
+          {
+            "Type": "Button",
+            "Name": "backMenu",
+            "X": 210,
+            "Width": 30,
+            "Height": 30,
+            "LockPosition": true,
+            "Pressed": "__generated\\icon_theme_images_action_home_filled_30_30_A88D34.svg.png",
+            "Released": "__generated\\icon_theme_images_action_home_filled_30_30_000000.svg.png"
+          },
+          {
+            "Type": "ButtonWithLabel",
+            "Name": "PVP",
+            "X": 8,
+            "Y": 175,
+            "Width": 225,
+            "Height": 94,
+            "LockPosition": true,
+            "Pressed": "__generated\\glass_theme_images_widgets_button_regular_height_50_small_round_pressed.png",
+            "Released": "__generated\\glass_theme_images_widgets_button_regular_height_50_small_round_active.png",
+            "TextId": "__SingleUse_8MKT",
+            "PressedColor": {
+              "Red": 102,
+              "Green": 102,
+              "Blue": 102
+            },
+            "TextRotation": "0",
+            "Preset": "glass_theme\\presets\\button\\regular\\height_50\\small_round_active.json"
+          },
+          {
+            "Type": "ButtonWithLabel",
+            "Name": "PVE",
+            "X": 8,
+            "Y": 43,
+            "Width": 225,
+            "Height": 94,
+            "LockPosition": true,
+            "Pressed": "__generated\\glass_theme_images_widgets_button_regular_height_50_small_round_pressed.png",
+            "Released": "__generated\\glass_theme_images_widgets_button_regular_height_50_small_round_active.png",
+            "TextId": "__SingleUse_DZAG",
+            "PressedColor": {
+              "Red": 102,
+              "Green": 102,
+              "Blue": 102
+            },
+            "TextRotation": "0",
+            "Preset": "glass_theme\\presets\\button\\regular\\height_50\\small_round_active.json"
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "backMenu",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "backMenu"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionCover",
+              "ScreenTransitionDirection": "West",
+              "ActionComponent": "Menu"
+            }
+          },
+          {
+            "InteractionName": "playPVP",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "PVP"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionSlide",
+              "ScreenTransitionDirection": "East",
               "ActionComponent": "Game"
+            }
+          },
+          {
+            "InteractionName": "playPVE",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "PVE"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionSlide",
+              "ScreenTransitionDirection": "East",
+              "ActionComponent": "GamePVE"
             }
           }
         ]
@@ -66,6 +168,158 @@
             "X": 210,
             "Width": 30,
             "Height": 30,
+            "LockPosition": true,
+            "Pressed": "__generated\\icon_theme_images_action_home_filled_30_30_A88D34.svg.png",
+            "Released": "__generated\\icon_theme_images_action_home_filled_30_30_000000.svg.png"
+          },
+          {
+            "Type": "CustomContainerInstance",
+            "Name": "ball1",
+            "X": 145,
+            "Y": 241,
+            "Width": 10,
+            "Height": 10,
+            "CustomContainerDefinitionName": "ball",
+            "Draggable": true,
+            "Moveable": true
+          },
+          {
+            "Type": "SvgImage",
+            "Name": "pad1",
+            "X": 167,
+            "Y": 259,
+            "Width": 58,
+            "Height": 55,
+            "Image": "ping-pong-svgrepo-com.svg",
+            "ImagePositionX": 3.0,
+            "ImagePositionY": 3.0,
+            "ImageHorizontalScale": 0.1,
+            "ImageVerticalScale": 0.1,
+            "RotationCenterX": 25.0,
+            "RotationCenterY": 25.0,
+            "RotationDegrees": -1.0,
+            "Draggable": true,
+            "Moveable": true
+          },
+          {
+            "Type": "SvgImage",
+            "Name": "pad2",
+            "X": 19,
+            "Width": 54,
+            "Height": 54,
+            "Image": "ping-pong-svgrepo-com.svg",
+            "ImagePositionX": -3.0,
+            "ImagePositionY": -3.0,
+            "ImageHorizontalScale": 0.1,
+            "ImageVerticalScale": 0.1,
+            "RotationCenterX": 25.0,
+            "RotationCenterY": 25.0,
+            "RotationDegrees": 180.0,
+            "Draggable": true,
+            "Moveable": true
+          },
+          {
+            "Type": "TextProgress",
+            "Name": "point_pad2",
+            "X": -121,
+            "Y": 110,
+            "Width": 175,
+            "Height": 50,
+            "TextId": "__SingleUse_YPOF",
+            "Color": {
+              "Red": 12,
+              "Green": 27,
+              "Blue": 55
+            },
+            "FileNameBackground": "__generated\\alternate_theme_images_widgets_textprogress_backgrounds_rounded_neutral.png",
+            "IndicatorPositionX": 12,
+            "IndicatorPositionY": 10,
+            "IndicatorPositionWidth": 274,
+            "IndicatorPositionHeight": 30,
+            "ProgressRangeMax": 100,
+            "ProgressRangeSteps": 1
+          },
+          {
+            "Type": "TextProgress",
+            "Name": "point_pad1",
+            "X": 182,
+            "Y": 160,
+            "Width": 175,
+            "Height": 50,
+            "TextId": "__SingleUse_WQMU",
+            "Color": {
+              "Red": 12,
+              "Green": 27,
+              "Blue": 55
+            },
+            "FileNameBackground": "__generated\\alternate_theme_images_widgets_textprogress_backgrounds_rounded_neutral.png",
+            "IndicatorPositionX": 12,
+            "IndicatorPositionY": 10,
+            "IndicatorPositionWidth": 50,
+            "IndicatorPositionHeight": 30,
+            "ProgressRangeMax": 100,
+            "ProgressRangeSteps": 1
+          },
+          {
+            "Type": "TextArea",
+            "Name": "pad1_Win",
+            "X": 40,
+            "Y": 210,
+            "Width": 170,
+            "Height": 41,
+            "Visible": false,
+            "TextId": "__SingleUse_ADVQ",
+            "TextRotation": "0",
+            "AutoSize": true
+          },
+          {
+            "Type": "TextArea",
+            "Name": "pad2_Win",
+            "X": 40,
+            "Y": 60,
+            "Width": 170,
+            "Height": 41,
+            "Visible": false,
+            "TextId": "__SingleUse_VEI0",
+            "TextRotation": "180",
+            "AutoSize": true
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "backMenu",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "backMenu"
+            },
+            "Action": {
+              "Type": "ActionGotoScreen",
+              "ScreenTransitionType": "ScreenTransitionCover",
+              "ScreenTransitionDirection": "West",
+              "ActionComponent": "Menu"
+            }
+          }
+        ]
+      },
+      {
+        "Name": "GamePVE",
+        "CanvasBufferSize": 3600,
+        "Components": [
+          {
+            "Type": "CustomContainerInstance",
+            "Name": "gameBackground1",
+            "Width": 240,
+            "Height": 320,
+            "LockPosition": true,
+            "CustomContainerDefinitionName": "gameBackground"
+          },
+          {
+            "Type": "Button",
+            "Name": "backMenu",
+            "X": 210,
+            "Width": 30,
+            "Height": 30,
+            "LockPosition": true,
             "Pressed": "__generated\\icon_theme_images_action_home_filled_30_30_A88D34.svg.png",
             "Released": "__generated\\icon_theme_images_action_home_filled_30_30_000000.svg.png"
           },
@@ -84,7 +338,7 @@
             "Type": "SvgImage",
             "Name": "pad1",
             "X": 155,
-            "Y": 251,
+            "Y": 258,
             "Width": 58,
             "Height": 55,
             "Image": "ping-pong-svgrepo-com.svg",
@@ -101,7 +355,7 @@
           {
             "Type": "SvgImage",
             "Name": "pad2",
-            "X": 27,
+            "X": 26,
             "Width": 54,
             "Height": 54,
             "Image": "ping-pong-svgrepo-com.svg",
@@ -114,6 +368,72 @@
             "RotationDegrees": 180.0,
             "Draggable": true,
             "Moveable": true
+          },
+          {
+            "Type": "TextProgress",
+            "Name": "point_pad1",
+            "X": 178,
+            "Y": 160,
+            "Width": 175,
+            "Height": 50,
+            "TextId": "__SingleUse_YPUN",
+            "Color": {
+              "Red": 12,
+              "Green": 27,
+              "Blue": 55
+            },
+            "FileNameBackground": "__generated\\alternate_theme_images_widgets_textprogress_backgrounds_rounded_neutral.png",
+            "IndicatorPositionX": 12,
+            "IndicatorPositionY": 10,
+            "IndicatorPositionWidth": 45,
+            "IndicatorPositionHeight": 30,
+            "ProgressRangeMax": 100,
+            "ProgressRangeSteps": 1
+          },
+          {
+            "Type": "TextProgress",
+            "Name": "point_pad2",
+            "X": -122,
+            "Y": 110,
+            "Width": 175,
+            "Height": 50,
+            "TextId": "__SingleUse_WD6J",
+            "Color": {
+              "Red": 12,
+              "Green": 27,
+              "Blue": 55
+            },
+            "FileNameBackground": "__generated\\alternate_theme_images_widgets_textprogress_backgrounds_rounded_neutral.png",
+            "IndicatorPositionX": 12,
+            "IndicatorPositionY": 10,
+            "IndicatorPositionWidth": 281,
+            "IndicatorPositionHeight": 30,
+            "ProgressRangeMax": 100,
+            "ProgressRangeSteps": 1
+          },
+          {
+            "Type": "TextArea",
+            "Name": "pad1_Win",
+            "X": 40,
+            "Y": 217,
+            "Width": 170,
+            "Height": 41,
+            "Visible": false,
+            "TextId": "__SingleUse_AM7H",
+            "TextRotation": "0",
+            "AutoSize": true
+          },
+          {
+            "Type": "TextArea",
+            "Name": "pad1_Lose",
+            "X": 53,
+            "Y": 217,
+            "Width": 133,
+            "Height": 41,
+            "Visible": false,
+            "TextId": "__SingleUse_HV8C",
+            "TextRotation": "0",
+            "AutoSize": true
           }
         ],
         "Interactions": [
@@ -154,10 +474,8 @@
           {
             "Type": "BoxWithBorder",
             "Name": "boxWithBorder1",
-            "X": 48,
-            "Y": 28,
-            "Width": 145,
-            "Height": 265,
+            "Width": 240,
+            "Height": 320,
             "LockPosition": true,
             "Color": {
               "Red": 255,
@@ -169,10 +487,10 @@
           {
             "Type": "Box",
             "Name": "box1",
-            "X": 117,
-            "Y": 33,
-            "Width": 6,
-            "Height": 255,
+            "X": 120,
+            "Y": 5,
+            "Width": 3,
+            "Height": 310,
             "LockPosition": true,
             "Color": {
               "Red": 254,
@@ -183,10 +501,9 @@
           {
             "Type": "BoxWithBorder",
             "Name": "boxWithBorder2",
-            "X": 50,
-            "Y": 155,
-            "Width": 140,
-            "Height": 10,
+            "Y": 156,
+            "Width": 240,
+            "Height": 9,
             "LockPosition": true,
             "Color": {
               "Red": 255,

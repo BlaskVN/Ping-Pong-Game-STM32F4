@@ -25,8 +25,14 @@ public:
 
     void gotoMenuScreenCoverTransitionWest();
 
+    // SelectMode
+    void gotoSelectModeScreenSlideTransitionEast();
+
     // Game
     void gotoGameScreenSlideTransitionEast();
+
+    // GamePVE
+    void gotoGamePVEScreenSlideTransitionEast();
 
 protected:
     touchgfx::Callback<FrontendApplicationBase> transitionCallback;
@@ -38,8 +44,14 @@ protected:
 
     void gotoMenuScreenCoverTransitionWestImpl();
 
+    // SelectMode
+    void gotoSelectModeScreenSlideTransitionEastImpl();
+
     // Game
     void gotoGameScreenSlideTransitionEastImpl();
+
+    // GamePVE
+    void gotoGamePVEScreenSlideTransitionEastImpl();
 };
 
 #endif // FRONTENDAPPLICATIONBASE_HPP
