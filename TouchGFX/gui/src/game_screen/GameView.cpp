@@ -96,16 +96,16 @@ void GameView::handlePad1Movement() {
 
 			switch (mv_cmd) {
 			case 'A':
-				y -= 10;
+				y -= 15;
 				break; // UP
 			case 'B':
-				y += 10;
+				y += 15;
 				break; // DOWN
 			case 'C':
-				x -= 10;
+				x -= 15;
 				break; // LEFT
 			case 'D':
-				x += 10;
+				x += 15;
 				break; // RIGHT
 			default:
 				return;

@@ -1325,7 +1325,7 @@ void StartTaskJoystickDMA(void *argument)
 		}
 
 		//pad1Ydown - Di chuyen Pad 2 xa luoi (Y++)
-		if (JoystickPad1Y >= 20) {
+		if (JoystickPad1Y >= 50) {
 			HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_14);
 
 			uint32_t count = osMessageQueueGetCount(myQueueJoystickHandle);
@@ -1354,7 +1354,7 @@ void StartTaskJoystickDMA(void *argument)
 		}
 
 		//pad2Xright - Di chuyen Pad 1 sang phai ben nguoi choi Pad 1 (X++)
-		if (JoystickPad1X >= 20) {
+		if (JoystickPad1X >= 50) {
 
 			HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_14);
 
@@ -1400,7 +1400,7 @@ void StartTaskJoystickDMA(void *argument)
 		HAL_UART_Transmit(&huart1, (const char *)buf, strlen(buf),
 		HAL_MAX_DELAY);
 
-		vTaskDelay(pdMS_TO_TICKS(20));
+		vTaskDelay(pdMS_TO_TICKS(10));
 //    osDelay(1);
 	}
 	}
