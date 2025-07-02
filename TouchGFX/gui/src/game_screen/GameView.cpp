@@ -55,19 +55,22 @@ void GameView::setupScreen()
     pad1_Win.setVisible(false);
     pad2_Win.setVisible(false);
     
-    const int screenWidth = 240; // Hoặc this->getWidth() nếu View là toàn màn hình
-	const int screenHeight = 320; // Hoặc this->getHeight()
-	const int screenCenterY = screenHeight / 2;
+//    const int screenWidth = 240; // Hoặc this->getWidth() nếu View là toàn màn hình
+//	const int screenHeight = 320; // Hoặc this->getHeight()
+//	const int screenCenterY = screenHeight / 2;
+//
+//	// Chia màn hình thành 2 nửa
+//	const int upperHalfMaxY = screenCenterY; // Nửa trên: từ 0 đến screenCenterY
+//
+//	// Thiết lập giới hạn cho pad1 (chỉ nửa dưới màn hình)
+//	min_Pad1_movement_Y = screenCenterY; // Pad1 chỉ có thể ở nửa dưới
+//	max_Pad1_movement_Y = screenHeight - static_cast<int>(pad1.getHeight() / 2);
+//
+//	min_Pad1_movement_X = static_cast<int>(pad1.getWidth() / 2);
+//	max_Pad1_movement_X = screenWidth - static_cast<int>(pad1.getWidth() / 2);
 
-	// Chia màn hình thành 2 nửa
-	const int upperHalfMaxY = screenCenterY; // Nửa trên: từ 0 đến screenCenterY
-
-	min_Pad1_movement_Y = static_cast<int>(pad1.getHeight() / 2) + upperHalfMaxY;
-	max_Pad1_movement_Y = screenHeight - static_cast<int>(pad1.getHeight() / 2);
-
-	min_Pad1_movement_X = static_cast<int>(pad1.getWidth() / 2);
-	max_Pad1_movement_X = screenWidth - static_cast<int>(pad1.getWidth() / 2);
-
+	// Đặt pad1 tại vị trí cân bằng ban đầu
+	pad1.moveTo(91, 259);
 
     resetGame(); // Initialize game state
 }
@@ -77,56 +80,96 @@ void GameView::tearDownScreen()
     GameViewBase::tearDownScreen();
 }
 
-void GameView::handlePad1Movement()
-{
-    pad1.setTouchable(false);
-    uint16_t cnt = osMessageQueueGetCount(myQueueJoystickHandle);
-    if (cnt>0)
-    {
-        uint8_t movement_cmd;
-        osMessageQueueGet(myQueueJoystickHandle, &movement_cmd, NULL, 0);
+void GameView::handlePad1Movement() {
+	pad1.setTouchable(false);
+	uint16_t cnt = osMessageQueueGetCount(myQueueJoystickHandle);
+	if (cnt > 0) {
+//		uint8_t cmd;
+//		osMessageQueueGet(myQueueJoystickHandle, &cmd, NULL, 0);
+		uint8_t mv_cmd;
+		osMessageQueueGet(myQueueJoystickHandle, &mv_cmd, NULL, 0);
+//		if (cmd == 'J') {
 
-//        int x = pad1.getX();
-//        int y = pad1.getY();
-//
-//        switch(movement_cmd) {
-//          case 'A': y -= 10; break; // UP
-//          case 'B': y += 10; break; // DOWN
-//          case 'C': x -= 10; break; // LEFT
-//          case 'D': x += 10; break; // RIGHT
-//          default: return;
-//        }
-        if(movement_cmd == 'J'){
-        pad1.moveTo(jtPad1_X , jtPad1_Y);
-        pad1.invalidate();
-        }
-    }
+
+			int x = pad1.getX();
+			int y = pad1.getY();
+
+			switch (mv_cmd) {
+			case 'A':
+				y -= 10;
+				break; // UP
+			case 'B':
+				y += 10;
+				break; // DOWN
+			case 'C':
+				x -= 10;
+				break; // LEFT
+			case 'D':
+				x += 10;
+				break; // RIGHT
+			default:
+				return;
+			}
+
+			pad1.moveTo(x, y);
+			pad1.invalidate();
+
+			/*
+			 // Kiểm tra giới hạn trước khi di chuyển
+			 //            int newX = jtPad1_X;
+			 //            int newY = jtPad1_Y;
+			 //
+			 //            // Áp dụng giới hạn X
+			 //            if (newX < min_Pad1_movement_X) newX = min_Pad1_movement_X;
+			 //            if (newX > max_Pad1_movement_X) newX = max_Pad1_movement_X;
+			 //
+			 //            // Áp dụng giới hạn Y
+			 //            if (newY < min_Pad1_movement_Y) newY = min_Pad1_movement_Y;
+			 //            if (newY > max_Pad1_movement_Y) newY = max_Pad1_movement_Y;
+			 //
+
+
+
+
+			 pad1.moveTo(jtPad1_X-10, jtPad1_Y-10);
+			 pad1.invalidate();
+
+			 */
+		}
+//	}
 }
 
 
-void GameView::handlePad2Movement()
-{
-    pad2.setTouchable(false);
-    uint16_t cnt = osMessageQueueGetCount(myQueueButtonHandle);
-    if (cnt>0)
-    {
-        uint8_t movement_cmd;
-        osMessageQueueGet(myQueueButtonHandle, &movement_cmd, NULL, 0);
+void GameView::handlePad2Movement() {
+	pad2.setTouchable(false);
+	uint16_t cnt = osMessageQueueGetCount(myQueueButtonHandle);
+	if (cnt > 0) {
+		uint8_t movement_cmd;
+		osMessageQueueGet(myQueueButtonHandle, &movement_cmd, NULL, 0);
 
-        int x = pad2.getX();
-        int y = pad2.getY();
+		int x = pad2.getX();
+		int y = pad2.getY();
 
-        switch(movement_cmd) {
-          case 'A': y += 10; break; // UP
-          case 'B': y -= 10; break; // DOWN
-          case 'C': x -= 10; break; // LEFT
-          case 'D': x += 10; break; // RIGHT
-          default: return;
-        }
+		switch (movement_cmd) {
+		case 'A':
+			y += 10;
+			break; // UP
+		case 'B':
+			y -= 10;
+			break; // DOWN
+		case 'C':
+			x -= 10;
+			break; // LEFT
+		case 'D':
+			x += 10;
+			break; // RIGHT
+		default:
+			return;
+		}
 
-        pad2.moveTo(x,y);
-        pad2.invalidate();
-    }
+		pad2.moveTo(x, y);
+		pad2.invalidate();
+	}
 }
 
 void GameView::handleTickEvent()

@@ -25,6 +25,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Components/ili9341/ili9341.h"
+#include <stdio.h>
+#include <string.h>
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,7 +66,9 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
+ADC_HandleTypeDef hadc2;
 DMA_HandleTypeDef hdma_adc1;
+DMA_HandleTypeDef hdma_adc2;
 
 CRC_HandleTypeDef hcrc;
 
@@ -120,13 +125,13 @@ const osMessageQueueAttr_t myQueueButton_attributes = {
 /* USER CODE BEGIN PV */
 uint8_t isRevD = 0; /* Applicable only for STM32F429I DISCOVERY REVD and above */
 
-#define JOYSTICK_CHANNEL_COUNT 2
+#define JOYSTICK_CHANNEL_COUNT 1
 
-uint32_t adc1_buffer[JOYSTICK_CHANNEL_COUNT];
+uint32_t adc1_buffer;
 
 uint32_t nan;
 
-uint32_t adc2_buffer[JOYSTICK_CHANNEL_COUNT];
+uint32_t adc2_buffer;
 
 uint32_t JoystickPad1X;
 uint32_t JoystickPad1Y;
@@ -176,6 +181,7 @@ static void MX_LTDC_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_ADC1_Init(void);
 static void MX_USART1_UART_Init(void);
+static void MX_ADC2_Init(void);
 void StartDefaultTask(void *argument);
 extern void TouchGFX_Task(void *argument);
 void StartTaskJoystickDMA(void *argument);
@@ -268,12 +274,15 @@ int main(void)
   MX_DMA2D_Init();
   MX_ADC1_Init();
   MX_USART1_UART_Init();
+  MX_ADC2_Init();
   MX_TouchGFX_Init();
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
   /* USER CODE BEGIN 2 */
 
-	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&adc1_buffer, JOYSTICK_CHANNEL_COUNT);
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t*)adc1_buffer, JOYSTICK_CHANNEL_COUNT);
+	HAL_ADC_Start_DMA(&hadc2, (uint32_t*)adc2_buffer, JOYSTICK_CHANNEL_COUNT);
+
 
   /* USER CODE END 2 */
 
@@ -415,15 +424,15 @@ static void MX_ADC1_Init(void)
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
-  hadc1.Init.ScanConvMode = ENABLE;
+  hadc1.Init.ScanConvMode = DISABLE;
   hadc1.Init.ContinuousConvMode = ENABLE;
   hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.NbrOfConversion = 2;
+  hadc1.Init.NbrOfConversion = 1;
   hadc1.Init.DMAContinuousRequests = ENABLE;
-  hadc1.Init.EOCSelection = ADC_EOC_SEQ_CONV;
+  hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   if (HAL_ADC_Init(&hadc1) != HAL_OK)
   {
     Error_Handler();
@@ -438,18 +447,61 @@ static void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN ADC1_Init 2 */
+
+  /* USER CODE END ADC1_Init 2 */
+
+}
+
+/**
+  * @brief ADC2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC2_Init(void)
+{
+
+  /* USER CODE BEGIN ADC2_Init 0 */
+
+  /* USER CODE END ADC2_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC2_Init 1 */
+
+  /* USER CODE END ADC2_Init 1 */
+
+  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
+  */
+  hadc2.Instance = ADC2;
+  hadc2.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc2.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc2.Init.ScanConvMode = DISABLE;
+  hadc2.Init.ContinuousConvMode = ENABLE;
+  hadc2.Init.DiscontinuousConvMode = DISABLE;
+  hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc2.Init.NbrOfConversion = 1;
+  hadc2.Init.DMAContinuousRequests = ENABLE;
+  hadc2.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  if (HAL_ADC_Init(&hadc2) != HAL_OK)
+  {
+    Error_Handler();
+  }
 
   /** Configure for the selected ADC regular channel its corresponding rank in the sequencer and its sample time.
   */
   sConfig.Channel = ADC_CHANNEL_2;
-  sConfig.Rank = 2;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
+  sConfig.Rank = 1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_84CYCLES;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
   {
     Error_Handler();
   }
-  /* USER CODE BEGIN ADC1_Init 2 */
+  /* USER CODE BEGIN ADC2_Init 2 */
 
-  /* USER CODE END ADC1_Init 2 */
+  /* USER CODE END ADC2_Init 2 */
 
 }
 
@@ -727,6 +779,9 @@ static void MX_DMA_Init(void)
   /* DMA2_Stream0_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+  /* DMA2_Stream2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
 
 }
 
@@ -841,7 +896,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pins : PB12 PB13 */
   GPIO_InitStruct.Pin = GPIO_PIN_12|GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PD12 PD13 */
@@ -854,7 +909,7 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pins : PD4 PD5 */
   GPIO_InitStruct.Pin = GPIO_PIN_4|GPIO_PIN_5;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PG13 PG14 */
@@ -875,9 +930,9 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
 		adc1_ready_flag = 1;
 	}
 
-//	if (hadc == &hadc2) {
-//		adc2_ready_flag = 1;
-//	}
+	if (hadc == &hadc2) {
+		adc2_ready_flag = 1;
+	}
 }
 
 /**
@@ -1230,62 +1285,126 @@ void StartDefaultTask(void *argument)
 * @retval None
 */
 /* USER CODE END Header_StartTaskJoystickDMA */
-void StartTaskJoystickDMA(void *argument) {
-	/* USER CODE BEGIN StartTaskJoystickDMA */
+void StartTaskJoystickDMA(void *argument)
+{
+  /* USER CODE BEGIN StartTaskJoystickDMA */
 	/* Infinite loop */
 	for (;;) {
 
 		char buf[40];
 
-		if (adc1_ready_flag == 1) {
+		if (adc1_ready_flag == 1 && adc2_ready_flag == 1) {
 
 			adc1_ready_flag = 0;
+			adc2_ready_flag = 0;
 
-			JoystickPad1X = adc1_buffer[0];
-			JoystickPad1Y = adc1_buffer[1];
+			JoystickPad1X = HAL_ADC_GetValue(&hadc1);
+			JoystickPad1Y = HAL_ADC_GetValue(&hadc2);
 
-			jtPad1_X = mapJoystick(JoystickPad1X, 50, 980, min_Pad1_movement_X, max_Pad1_movement_X);
+			uint32_t count = osMessageQueueGetCount(myQueueJoystickHandle);
 
-			jtPad1_Y = mapJoystick(JoystickPad1Y, 50, 980, min_Pad1_movement_Y, max_Pad1_movement_Y);
-
-//			sprintf(buf, "ADC1: %3d - %3d\r\n", jtPad1_X, jtPad1_Y);
+//			if (count < 3) {
+//				char msg = 'J';
+//				osMessageQueuePut(myQueueJoystickHandle, &msg, 0, 0);
+//			}
 //
-//			HAL_UART_Transmit(&huart1, (const char*) buf, strlen(buf),
-//			HAL_MAX_DELAY);
+//		}
+
+		//pad2Yup - Di chuyen Pad 2 len gan luoi (Y--)
+		if (JoystickPad1Y <= 10) {
+			HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_14);
 
 			uint32_t count = osMessageQueueGetCount(myQueueJoystickHandle);
 
 			if (count < 2) {
-				char msg = 'J';
-//				if (jtPad1_X > 4 && jtPad1_X <= 255 ) {//Sang phai Pad 1
-//
-//					osMessageQueuePut(myQueueJoystickHandle, &pad1Xright, 0,0);
-//
-//				}else if (jtPad1_X >= 0 && jtPad1_X < 2) {//Sang trai Pad 1
-//
-//					osMessageQueuePut(myQueueJoystickHandle, &pad1Xleft, 0,0);
-//
-//				}else if (jtPad1_Y > 4 && jtPad1_Y <= 255) {//Len sat luoi Pad 1
-//
-//					osMessageQueuePut(myQueueJoystickHandle, &pad1Yup, 0,0);
-//
-//				}else if (jtPad1_Y < 3 && jtPad1_Y >= 0) {//Ra xa luoi Pad 1
-//
-//					osMessageQueuePut(myQueueJoystickHandle, &pad1Ydown, 0,0);
-//
-//				}
 
-				osMessageQueuePut(myQueueJoystickHandle, &msg, 0,0);
-//				osMessageQueuePut(myQueueJoystickHandle, &pad1Ydown, 0,0);
+				osMessageQueuePut(myQueueJoystickHandle, &pad2Yup, 0, 0);
 
 			}
 
 		}
 
+		//pad1Ydown - Di chuyen Pad 2 xa luoi (Y++)
+		if (JoystickPad1Y >= 20) {
+			HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_14);
+
+			uint32_t count = osMessageQueueGetCount(myQueueJoystickHandle);
+
+			if (count < 2) {
+
+				osMessageQueuePut(myQueueJoystickHandle, &pad2Ydown, 0, 0);
+
+			}
+
+		}
+
+		//pad1Xleft - Di chuyen Pad 1 sang trai ben nguoi choi Pad 1 (X--)
+		if (JoystickPad1X <= 10) {
+
+			HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_14);
+
+			uint32_t count = osMessageQueueGetCount(myQueueJoystickHandle);
+
+			if (count < 2) {
+
+				osMessageQueuePut(myQueueJoystickHandle, &pad2Xleft, 0, 0);
+
+			}
+
+		}
+
+		//pad2Xright - Di chuyen Pad 1 sang phai ben nguoi choi Pad 1 (X++)
+		if (JoystickPad1X >= 20) {
+
+			HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_14);
+
+			uint32_t count = osMessageQueueGetCount(myQueueJoystickHandle);
+
+			if (count < 2) {
+
+				osMessageQueuePut(myQueueJoystickHandle, &pad2Xright, 0, 0);
+
+			}
+		}
+
+//		uint32_t count = osMessageQueueGetCount(myQueueJoystickHandle);
+		if (count < 2) {
+
+			uint8_t nt = 'E';
+			osMessageQueuePut(myQueueJoystickHandle, &nt, 0, 0);
+
+		}
+
+/*
+		// Chuyển đổi giá trị ADC thô thành tọa độ màn hình
+		// VRx = 13-14 và VRy = 13-14 là vị trí cân bằng
+//			uint32_t rawX = JoystickPad1X >> 6; // Chia cho 64 để có giá trị 0-63
+//			uint32_t rawY = JoystickPad1Y >> 6; // Chia cho 64 để có giá trị 0-63
+
+		// Kiểm tra vùng cân bằng (13-14)
+		if (JoystickPad1X >= 10 && JoystickPad1X <= 18 && JoystickPad1Y >= 10
+				&& JoystickPad1Y <= 18) {
+			// Vị trí cân bằng - giữ nguyên tại (91, 259)
+			jtPad1_X = 91;
+			jtPad1_Y = 259;
+		} else {
+			// Joystick di chuyển - map theo giá trị thực tự do (0-240 cho X, 0-320 cho Y)
+			jtPad1_X = mapJoystick(JoystickPad1X, 0, 700, 0, 240);
+			jtPad1_Y = mapJoystick(JoystickPad1Y, 0, 700, 0, 320);
+//				jtPad1_X = JoystickPad1X;
+//				jtPad1_Y = JoystickPad1Y;
+
+		}
+*/
+		sprintf(buf, "Raw: %3ld - %3ld\r\n", JoystickPad1X, JoystickPad1Y);
+		HAL_UART_Transmit(&huart1, (const char *)buf, strlen(buf),
+		HAL_MAX_DELAY);
+
 		vTaskDelay(pdMS_TO_TICKS(20));
 //    osDelay(1);
 	}
-	/* USER CODE END StartTaskJoystickDMA */
+	}
+  /* USER CODE END StartTaskJoystickDMA */
 }
 
 /* USER CODE BEGIN Header_StartTaskButton */
